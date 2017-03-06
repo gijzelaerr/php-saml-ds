@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Discovery</title>
+</head>
+<body>
+<h1>Discovery</h1>
+<p>Choose your Identity Provider.</p>
+
+<ul>
+    {% for entity in discoEntities %}
+        <li><a href="{{ entity.returnTo }}">{{ entity.displayName }}</a></li>
+    {% endfor %}
+</ul>
+</body>
+</html>

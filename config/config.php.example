@@ -1,0 +1,10 @@
+<?php
+
+return [
+    // list of IdPs to show
+    'idpList' => [
+        'https://idp.surfnet.nl',
+        'https://idp.geant.org',
+        'https://idp.nordu.net/idp/shibboleth',
+    ],
+];
