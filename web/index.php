@@ -34,11 +34,11 @@ try {
 
     // XXX validate
     // the return URI
-//    $returnUrl = $_GET['return'];
+    $returnUrl = $_GET['return'];
     // the parameter we need to put the IdP entityID in
-//    $idpKey = $_GET['returnIDParam'];
-    $returnUrl = 'http://localhost/foo?def=bar';
-    $idpKey = 'XYZ';
+    $idpKey = $_GET['returnIDParam'];
+//    $returnUrl = 'http://localhost/foo?def=bar';
+//    $idpKey = 'XYZ';
 
     $discoEntities = [];
     foreach ($entityDescriptors as $entityDescriptor) {
