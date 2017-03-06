@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Helvetica Neue", "Calibri Light", Roboto, sans-serif;
+    font-size: 90%;
+    max-width: 55em;
+    margin: 1em auto;
+    color: #555;
+    padding: 0.3em;
+    text-align: justify;
+    background-color: #eee;
+}
+
+h2 {
+    text-align: center;
+    margin: 1em;
+}
+
+ul {
+    background-color: #fff;
+    list-style: none;
+    background-color: #fff;
+}
+
+li {
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+}
+
+a {
+    padding: 2em;
+    display: block;
+    text-decoration: none;
+    color: #4db3cf;
+}
+
+a:hover {
+    background-color: #4db3cf;
+    color: #fff;
+}
+
+img {
+    width: 64px;
+    height: 48px;
+    margin-right: 3em;
+}

@@ -65,6 +65,7 @@ class Parser
             'displayName' => $this->getDisplayName($entityInfo[0]),
             'SSO' => $this->getSSO($idpDescriptor[0]),
             'signingCert' => $this->getSigningCert($idpDescriptor[0]),
+            'idpLogo' => $this->getLogo($entityInfo[0]),
         ];
     }
 
@@ -144,5 +145,20 @@ class Parser
         }
 
         return trim((string) $result[0]);
+    }
+
+    /**
+     * Get the logo URL or inline logo from the metadata.
+     */
+    private function getLogo(SimpleXMLElement $xml)
+    {
+        $logoList = [];
+        $result = $xml->xpath('md:IDPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:Logo');
+        if (0 === count($result)) {
+            // no logo
+            return null;
+        }
+
+        return (string) $result[0];
     }
 }

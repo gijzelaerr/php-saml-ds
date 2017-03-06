@@ -21,6 +21,8 @@ So what does this software do?
 
 That's it. No multi SP support, no JavaScript, no pipelines, no crap.
 
+![screenshot](contrib/screenshot.png).
+
 # Requirements
 
 Just PHP >= 5.4.
