@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * Copyright 2017 François Kooman <fkooman@tuxed.net>.
