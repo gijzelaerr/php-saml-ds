@@ -10,10 +10,15 @@
 <body>
 <h2>Choose your Identity Provider</h2>
 
+<!-- <p>Select an institution to login to the service.</p> -->
+
 <ul>
     {% for entity in discoEntities %}
         <li>
-            <a href="{{ entity.returnTo }}"><img src="{{ entity.idpLogo }}">{{ entity.displayName }}</a>
+            <a href="{{ entity.returnTo }}">
+                <img src="{{ entity.idpLogo }}">
+                <span>{{ entity.displayName }}</span>
+            </a>
         </li>
     {% endfor %}
 </ul>

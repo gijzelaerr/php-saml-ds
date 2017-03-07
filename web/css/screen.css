@@ -7,7 +7,7 @@
 body {
     font-family: "Helvetica Neue", "Calibri Light", Roboto, sans-serif;
     font-size: 90%;
-    max-width: 55em;
+    max-width: 45em;
     margin: 1em auto;
     color: #555;
     padding: 0.3em;
@@ -24,15 +24,15 @@ ul {
     background-color: #fff;
     list-style: none;
     background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,.2);
 }
 
-li {
-    vertical-align: middle;
-    border-bottom: 1px solid #eee;
+ul li:not(:last-child) {
+    border-bottom: 2px solid #eee;
 }
 
 a {
-    padding: 2em;
+    padding: 1em;
     display: block;
     text-decoration: none;
     color: #4db3cf;
@@ -46,5 +46,6 @@ a:hover {
 img {
     width: 64px;
     height: 48px;
-    margin-right: 3em;
+    margin-right: 2em;
+    vertical-align: middle;
 }
