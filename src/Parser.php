@@ -53,7 +53,7 @@ class Parser
     /**
      * @return array
      */
-    public function extractInfo($entityId)
+    private function extractInfo($entityId)
     {
         $entityInfo = $this->metadata->xpath(
             sprintf('//md:EntityDescriptor[@entityID="%s"]', $entityId)
