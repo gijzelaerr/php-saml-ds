@@ -22,7 +22,10 @@ use fkooman\SAML\DS\TwigTpl;
 
 try {
     $config = require sprintf('%s/config/config.php', dirname(__DIR__));
-    $parser = new Parser(sprintf('%s/data/md.xml', dirname(__DIR__)));
+
+    $metadataFiles = glob(sprintf('%s/config/*.xml', dirname(__DIR__)));
+    $parser = new Parser($metadataFiles);
+
     $entityDescriptors = $parser->generateMetadata($config['idpList']);
 
     $twigTpl = new TwigTpl(

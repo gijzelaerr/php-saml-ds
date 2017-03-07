@@ -23,17 +23,19 @@ use SimpleXMLElement;
 
 class Parser
 {
-    /** @var \SimpleXMLElement */
+    /** @var array */
     private $metadata;
 
-    public function __construct($metadataFile)
+    public function __construct(array $metadataFiles)
     {
-        if (false === $metadata = @simplexml_load_file($metadataFile)) {
-            throw new RuntimeException(sprintf('unable to read file "%s"', $metadataFile));
+        foreach ($metadataFiles as $metadataFile) {
+            if (false === $xml = @simplexml_load_file($metadataFile)) {
+                throw new RuntimeException(sprintf('unable to read file "%s"', $metadataFile));
+            }
+            // $xml->registerXPathNamespace('md', 'urn:oasis:names:tc:SAML:2.0:metadata');
+            // $xml->registerXPathNamespace('mdui', 'urn:oasis:names:tc:SAML:metadata:ui');
+            $this->metadata[] = $xml;
         }
-        $metadata->registerXPathNamespace('md', 'urn:oasis:names:tc:SAML:2.0:metadata');
-        $metadata->registerXPathNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
-        $this->metadata = $metadata;
     }
 
     /**
@@ -55,18 +57,28 @@ class Parser
      */
     private function extractInfo($entityId)
     {
-        $entityInfo = $this->metadata->xpath(
-            sprintf('//md:EntityDescriptor[@entityID="%s"]', $entityId)
-        );
-        $idpDescriptor = $entityInfo[0]->xpath('md:IDPSSODescriptor');
+        // support both metadata files with one entry and files with a
+        // collection of entries wrapped in EntitiesDescriptor
 
-        return [
-            'entityId' => $entityId,
-            'displayName' => $this->getDisplayName($entityInfo[0]),
-            'SSO' => $this->getSSO($idpDescriptor[0]),
-            'signingCert' => $this->getSigningCert($idpDescriptor[0]),
-            'idpLogo' => $this->getLogo($entityInfo[0]),
-        ];
+        foreach ($this->metadata as $xml) {
+            $entityInfo = $xml->xpath(sprintf('//md:EntityDescriptor[@entityID="%s"]', $entityId));
+            if (0 === count($entityInfo)) {
+                // entityId not found
+                continue;
+            }
+            $idpDescriptor = $entityInfo[0]->xpath('md:IDPSSODescriptor');
+
+            return [
+                'entityId' => $entityId,
+                'displayName' => $this->getDisplayName($entityInfo[0]),
+                'SSO' => $this->getSSO($idpDescriptor[0]),
+                'signingCert' => $this->getSigningCert($idpDescriptor[0]),
+                'idpLogo' => $this->getLogo($entityInfo[0]),
+            ];
+        }
+
+        // not found, XXX probably not throw an exception!
+        throw new ParserException(sprintf('entity "%s" not found', $entityId));
     }
 
     /**
@@ -91,6 +103,7 @@ class Parser
      */
     private function getSigningCert(SimpleXMLElement $xml)
     {
+        $xml->registerXPathNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
         $result = $xml->xpath('md:KeyDescriptor[@use="signing"]/ds:KeyInfo/ds:X509Data/ds:X509Certificate');
         if (0 === count($result)) {
             // no explicit entry found for "signing", assume the one specified
