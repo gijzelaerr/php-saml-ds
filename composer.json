@@ -14,6 +14,7 @@
     "license": "Apache-2.0",
     "name": "fkooman/php-saml-ds",
     "require": {
+        "ext-spl": "*",
         "ext-xml": "*",
         "php": ">=5.4.0",
         "twig/twig": "^1"
