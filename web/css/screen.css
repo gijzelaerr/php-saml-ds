@@ -49,3 +49,11 @@ img {
     margin-right: 2em;
     vertical-align: middle;
 }
+
+label {
+    font-weight: bold;
+}
+
+label input {
+    margin-bottom: 1em;
+}

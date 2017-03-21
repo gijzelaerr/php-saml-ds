@@ -12,15 +12,22 @@
 
 <!-- <p>Select an institution to login to the service.</p> -->
 
-<ul>
-    {% for entity in discoEntities %}
-        <li>
-            <a href="{{ entity.returnTo }}">
-                <img src="{{ entity.idpLogo }}">
-                <span>{{ entity.displayName }}</span>
-            </a>
-        </li>
-    {% endfor %}
-</ul>
+<div id="entity-list">
+    <label>Filter
+    <input type="text" autofocus="true" class="fuzzy-search" /></label>
+    <ul class="list">
+        {% for entity in discoEntities %}
+            <li>
+                <a href="{{ entity.returnTo }}">
+                    <img src="{{ entity.idpLogo }}">
+                    <span class="name">{{ entity.displayName }}</span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<script src="js/list.min.js"></script>
+<script src="js/discovery.js"></script>
+
 </body>
 </html>
