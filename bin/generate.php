@@ -28,6 +28,14 @@ try {
 
     $entityDescriptors = $parser->generateMetadata($config['idpList']);
 
+    // sort the entities by displayName
+    $sortedList = [];
+    foreach ($entityDescriptors as $entityDescriptor) {
+        $sortedList[$entityDescriptor['displayName'].$entityDescriptor['entityId']] = $entityDescriptor;
+    }
+    ksort($sortedList);
+    $entityDescriptors = array_values($sortedList);
+
     $twigTpl = new TwigTpl(
         [
             sprintf('%s/views', dirname(__DIR__)),
