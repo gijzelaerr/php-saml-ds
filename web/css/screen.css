@@ -35,11 +35,11 @@ a {
     padding: 1em;
     display: block;
     text-decoration: none;
-    color: #4db3cf;
+    color: #df7f0c;
 }
 
 a:hover, a:focus {
-    background-color: #4db3cf;
+    background-color: #df7f0c;
     color: #fff;
 }
 
