@@ -38,7 +38,7 @@ a {
     color: #4db3cf;
 }
 
-a:hover {
+a:hover, a:focus {
     background-color: #4db3cf;
     color: #fff;
 }

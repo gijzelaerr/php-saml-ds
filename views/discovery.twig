@@ -9,11 +9,11 @@
 </head>
 <body>
     <div id="entity-list">
-        <input type="text" autofocus="true" class="fuzzy-search" size="30" placeholder="Search for an institution...">
+        <input tabindex="1" type="text" autofocus="true" class="fuzzy-search" size="30" placeholder="Search for an institution...">
         <ul class="list">
-            {% for entity in discoEntities %}
+            {% for key, entity in discoEntities %}
                 <li>
-                    <a href="{{ entity.returnTo }}">
+                    <a tabindex="{{ key + 2 }}" href="{{ entity.returnTo }}">
                         <!-- <img src="{{ entity.idpLogo }}"> -->
                         <span class="name">{{ entity.displayName }}</span>
                     </a>
