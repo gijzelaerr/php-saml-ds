@@ -8,25 +8,22 @@
     <title>Discovery</title>
 </head>
 <body>
-<h2>Choose your Identity Provider</h2>
+    <div id="entity-list">
+        <input type="text" autofocus="true" class="fuzzy-search" size="30" placeholder="Search for an institution...">
+        <ul class="list">
+            {% for entity in discoEntities %}
+                <li>
+                    <a href="{{ entity.returnTo }}">
+                        <!-- <img src="{{ entity.idpLogo }}"> -->
+                        <span class="name">{{ entity.displayName }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
-<!-- <p>Select an institution to login to the service.</p> -->
-
-<div id="entity-list">
-    <input type="text" autofocus="true" class="fuzzy-search" size="30" placeholder="Search for an institution...">
-    <ul class="list">
-        {% for entity in discoEntities %}
-            <li>
-                <a href="{{ entity.returnTo }}">
-                    <!-- <img src="{{ entity.idpLogo }}"> -->
-                    <span class="name">{{ entity.displayName }}</span>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-<script src="js/list.min.js"></script>
-<script src="js/discovery.js"></script>
+    <script src="js/list.min.js"></script>
+    <script src="js/discovery.js"></script>
 
 </body>
 </html>

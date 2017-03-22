@@ -53,5 +53,7 @@ img {
 input.fuzzy-search {
     width: 100%;
     margin-bottom: 1em;
-    padding: 0.7em;
+    padding: 0.7em 1em;
+    border: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,.2);
 }
