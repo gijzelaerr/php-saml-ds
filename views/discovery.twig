@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="entity-list">
-        <input tabindex="1" type="text" autofocus="true" class="search" size="30" placeholder="Search for an institution...">
+        <input id="search" tabindex="1" type="text" autofocus="true" autocomplete="off" size="30" placeholder="Search for an institution...">
         <ul class="list">
             {% for key, entity in discoEntities %}
                 <li>
@@ -22,8 +22,6 @@
         </ul>
     </div>
 
-    <script src="js/list.min.js"></script>
-    <script src="js/discovery.js"></script>
-
+    <script src="js/filter.js"></script> 
 </body>
 </html>
