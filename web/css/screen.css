@@ -50,10 +50,8 @@ img {
     vertical-align: middle;
 }
 
-label {
-    font-weight: bold;
-}
-
-label input {
+input.fuzzy-search {
+    width: 100%;
     margin-bottom: 1em;
+    padding: 0.7em;
 }
