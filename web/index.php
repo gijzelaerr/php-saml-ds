@@ -57,6 +57,7 @@ try {
             'displayName' => $entityDescriptor['displayName'],
             'idpLogo' => $entityDescriptor['idpLogo'],
             'returnTo' => sprintf('%s&%s', $return, $queryString),
+            'keywords' => $entityDescriptor['keywords'],
         ];
     }
 

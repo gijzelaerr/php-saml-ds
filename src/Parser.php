@@ -74,6 +74,7 @@ class Parser
                 'SSO' => $this->getSSO($idpDescriptor[0]),
                 'signingCert' => $this->getSigningCert($idpDescriptor[0]),
                 'idpLogo' => $this->getLogo($entityInfo[0]),
+                'keywords' => $this->getKeywords($entityInfo[0]),
             ];
         }
 
@@ -148,6 +149,19 @@ class Parser
         }
 
         return trim((string) $result[0]);
+    }
+
+    /**
+     * @return array
+     */
+    private function getKeywords(SimpleXMLElement $xml)
+    {
+        $result = $xml->xpath('md:IDPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:Keywords[@xml:lang="en"]');
+        if (0 === count($result)) {
+            return [];
+        }
+
+        return explode(' ', $result[0]);
     }
 
     private function getOrganizationDisplayName(SimpleXMLElement $xml)

@@ -9,13 +9,13 @@
 </head>
 <body>
     <div id="entity-list">
-        <input tabindex="1" type="text" autofocus="true" class="fuzzy-search" size="30" placeholder="Search for an institution...">
+        <input tabindex="1" type="text" autofocus="true" class="search" size="30" placeholder="Search for an institution...">
         <ul class="list">
             {% for key, entity in discoEntities %}
                 <li>
                     <a tabindex="{{ key + 2 }}" href="{{ entity.returnTo }}">
                         <!-- <img src="{{ entity.idpLogo }}"> -->
-                        <span class="name">{{ entity.displayName }}</span>
+                        <span class="name keywords" data-keywords="{{ entity.keywords|join(' ') }}">{{ entity.displayName }}</span>
                     </a>
                 </li>
             {% endfor %}
