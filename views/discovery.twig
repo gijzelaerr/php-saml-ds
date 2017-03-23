@@ -9,7 +9,7 @@
 </head>
 <body>
     <form class="filter" method="post">
-        <input name="filter" id="filter" tabindex="1" type="text" autofocus="true" autocomplete="off" placeholder="Search for an institution...">
+        <input {% if not lastChosen %}autofocus="autofocus"{% endif %} name="filter" id="filter" tabindex="1" type="text" autocomplete="off" placeholder="Search for an institution...">
     </form>
 
     {% if lastChosen %}
@@ -17,7 +17,7 @@
         <ul class="list">
             <li>
                 <form class="entity" method="post">
-                    <button name="entityId" value="{{ chosenInfo.entityId }}" tabindex="2">{{ chosenInfo.displayName }}</button>
+                    <button autofocus="autofocus" name="entityId" value="{{ chosenInfo.entityId }}" tabindex="2">{{ chosenInfo.displayName }}</button>
                 </form>
             </li>
         </ul>
