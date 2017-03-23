@@ -15,11 +15,6 @@ body {
     background-color: #eee;
 }
 
-h2 {
-    text-align: center;
-    margin: 1em;
-}
-
 ul {
     background-color: #fff;
     list-style: none;
@@ -43,15 +38,16 @@ a:hover, a:focus {
     color: #fff;
 }
 
+/*
 img {
     width: 64px;
     height: 48px;
     margin-right: 2em;
     vertical-align: middle;
 }
+*/
 
-input#search {
-    display: none;
+form.filter input {
     width: 100%;
     margin-bottom: 1em;
     padding: 0.7em 1em;

@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function(event) {
-    document.getElementById('search').style.display = 'block';
-    var input = document.getElementById('search');
+    // XXX disable standard form submit for filter
+    // XXX clean this mess up, use modern ways to bind events
+
+    var input = document.getElementById('filter');
     input.onkeyup = function () {
         var filter = input.value.toUpperCase();
         var lis = document.getElementsByTagName('li');

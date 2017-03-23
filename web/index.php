@@ -50,8 +50,24 @@ try {
 
     $entityDescriptors = json_decode($jsonData, true);
 
+    // check if we have a filter
+    $filter = null;
+    if ('POST' === $_SERVER['REQUEST_METHOD']) {
+        if (array_key_exists('filter', $_POST)) {
+            $filter = !empty($_POST['filter']) ? $_POST['filter'] : null;
+        }
+    }
+
     $discoEntities = [];
     foreach ($entityDescriptors as $entityDescriptor) {
+        // use non-JS filter
+        if (!is_null($filter)) {
+            $searchString = $entityDescriptor['displayName'].implode('', $entityDescriptor['keywords']);
+            if (false === stripos($searchString, $filter)) {
+                continue;
+            }
+        }
+
         $queryString = http_build_query([$returnIDParam => $entityDescriptor['entityId']]);
         $discoEntities[] = [
             'displayName' => $entityDescriptor['displayName'],

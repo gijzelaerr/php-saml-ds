@@ -8,20 +8,20 @@
     <title>Discovery</title>
 </head>
 <body>
-    <div id="entity-list">
-        <input id="search" tabindex="1" type="text" autofocus="true" autocomplete="off" size="30" placeholder="Search for an institution...">
-        <ul class="list">
-            {% for key, entity in discoEntities %}
-                <li>
-                    <a tabindex="{{ key + 2 }}" href="{{ entity.returnTo }}">
-                        <!-- <img src="{{ entity.idpLogo }}"> -->
-                        <span class="name keywords" data-keywords="{{ entity.keywords|join(' ') }}">{{ entity.displayName }}</span>
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+    <form class="filter" method="post">
+        <input name="filter" id="filter" tabindex="1" type="text" autofocus="true" autocomplete="off" placeholder="Search for an institution...">
+    </form>
 
-    <script src="js/filter.js"></script> 
+    <ul class="list">
+        {% for key, entity in discoEntities %}
+            <li>
+                <a tabindex="{{ key + 2 }}" href="{{ entity.returnTo }}">
+                    <!-- <img src="{{ entity.idpLogo }}"> -->
+                    <span class="name keywords" data-keywords="{{ entity.keywords|join(' ') }}">{{ entity.displayName }}</span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <script src="js/filter.js"></script>
 </body>
 </html>
