@@ -5,13 +5,16 @@ document.addEventListener('DOMContentLoaded', function(event) {
     var input = document.getElementById('filter');
     input.onkeyup = function () {
         var filter = input.value.toUpperCase();
-        var lis = document.getElementsByTagName('li');
+        var lis = document.getElementById('disco').getElementsByTagName('li');
         for (var i = 0; i < lis.length; i++) {
-            var name = lis[i].getElementsByClassName('name')[0].innerHTML;
+            var name = false;
+            if(lis[i].getElementsByClassName('name')) {
+                name = lis[i].getElementsByClassName('name')[0].innerHTML;
+            }
             var keywords = lis[i].getElementsByClassName('name')[0].dataset.keywords;
-            if (name.toUpperCase().indexOf(filter) != -1) {
+            if (name && name.toUpperCase().indexOf(filter) != -1) {
                 lis[i].style.display = 'list-item';
-            } else if(keywords.toUpperCase().indexOf(filter) != -1) {
+            } else if(keywords && keywords.toUpperCase().indexOf(filter) != -1) {
                 lis[i].style.display = 'list-item';
             } else {
                 lis[i].style.display = 'none';

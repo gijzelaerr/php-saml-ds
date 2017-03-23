@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width; height=device-height; initial-scale=1">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/screen.css">
     <title>Discovery</title>
 </head>
@@ -12,13 +12,25 @@
         <input name="filter" id="filter" tabindex="1" type="text" autofocus="true" autocomplete="off" placeholder="Search for an institution...">
     </form>
 
-    <ul class="list">
+    {% if lastChosen %}
+        <div class="listHeader">Previously chosen</div>
+        <ul class="list">
+            <li>
+                <form class="entity" method="post">
+                    <button name="entityId" value="{{ chosenInfo.entityId }}" tabindex="2">{{ chosenInfo.displayName }}</button>
+                </form>
+            </li>
+        </ul>
+    {% endif %}
+
+    <div class="listHeader">Institutes with access</div>
+
+    <ul id="disco" class="list">
         {% for key, entity in discoEntities %}
             <li>
-                <a tabindex="{{ key + 2 }}" href="{{ entity.returnTo }}">
-                    <!-- <img src="{{ entity.idpLogo }}"> -->
-                    <span class="name keywords" data-keywords="{{ entity.keywords|join(' ') }}">{{ entity.displayName }}</span>
-                </a>
+                <form class="entity" method="post">
+                    <button name="entityId" value="{{ entity.entityId }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ entity.keywords|join(' ') }}">{{ entity.displayName }}</button>
+                </form>
             </li>
         {% endfor %}
     </ul>

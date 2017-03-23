@@ -20,32 +20,32 @@ ul {
     list-style: none;
     background-color: #fff;
     box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    margin-bottom: 2em;
 }
 
 ul li:not(:last-child) {
     border-bottom: 2px solid #eee;
 }
 
-a {
+form.entity button {
+    width: 100%;
+    text-align: left;
+    border: 0;
+    background-color: #fff;
     padding: 1em;
-    display: block;
-    text-decoration: none;
     color: #df7f0c;
 }
 
-a:hover, a:focus {
+form.entity button:hover, form.entity button:active, form.entity button:focus {
     background-color: #df7f0c;
     color: #fff;
+    cursor: pointer;
 }
 
-/*
-img {
-    width: 64px;
-    height: 48px;
-    margin-right: 2em;
-    vertical-align: middle;
+form.entity button::-moz-focus-inner {
+    /* firefox work around to disable ugly "outline" */
+    border: 0;
 }
-*/
 
 form.filter input {
     width: 100%;
@@ -53,4 +53,12 @@ form.filter input {
     padding: 0.7em 1em;
     border: 0;
     box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+
+div.listHeader {
+    box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    padding: 0.7em 1em;
+    border: 0;
+    width: 100%;
+    background-color: #eee;
 }

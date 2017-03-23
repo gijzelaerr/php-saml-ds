@@ -53,9 +53,36 @@ try {
     // check if we have a filter
     $filter = null;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
+        if (array_key_exists('entityId', $_POST)) {
+            // entry chosen
+            // XXX record it for later (save in cookie)
+
+            setcookie(
+                'entityId',
+                $_POST['entityId'],
+                time() + 60 * 60 * 24 * 365,    // remember for 1 year
+                '',
+                '',
+                false,
+                true
+            );
+
+            $queryString = http_build_query([$returnIDParam => $_POST['entityId']]);
+            $returnTo = sprintf('%s&%s', $return, $queryString);
+            http_response_code(302);
+            header(sprintf('Location: %s', $returnTo));
+            exit(0);
+        }
+
         if (array_key_exists('filter', $_POST)) {
             $filter = !empty($_POST['filter']) ? $_POST['filter'] : null;
         }
+    }
+
+    $lastChosen = false;
+    $chosenInfo = [];
+    if (array_key_exists('entityId', $_COOKIE)) {
+        $lastChosen = true;
     }
 
     $discoEntities = [];
@@ -69,10 +96,22 @@ try {
         }
 
         $queryString = http_build_query([$returnIDParam => $entityDescriptor['entityId']]);
+
+        if ($lastChosen) {
+            if ($entityDescriptor['entityId'] === $_COOKIE['entityId']) {
+                $chosenInfo = [
+                    'entityId' => $entityDescriptor['entityId'],
+                    'displayName' => $entityDescriptor['displayName'],
+                    'idpLogo' => $entityDescriptor['idpLogo'],
+                ];
+                continue;
+            }
+        }
+
         $discoEntities[] = [
+            'entityId' => $entityDescriptor['entityId'],
             'displayName' => $entityDescriptor['displayName'],
             'idpLogo' => $entityDescriptor['idpLogo'],
-            'returnTo' => sprintf('%s&%s', $return, $queryString),
             'keywords' => $entityDescriptor['keywords'],
         ];
     }
@@ -80,6 +119,8 @@ try {
     echo $twigTpl->render(
         'discovery',
         [
+            'lastChosen' => $lastChosen,
+            'chosenInfo' => $chosenInfo,
             'discoEntities' => $discoEntities,
         ]
     );
