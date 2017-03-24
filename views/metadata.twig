@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <md:EntitiesDescriptor xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
 {% for entityDescriptor in entityDescriptors %}
-    <md:EntityDescriptor entityID="{{ entityDescriptor.entityId }}">
+    <md:EntityDescriptor entityID="{{ entityDescriptor.entityID }}">
         <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
           <md:KeyDescriptor use="signing">
             <ds:KeyInfo>

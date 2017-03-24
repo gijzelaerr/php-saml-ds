@@ -14,7 +14,7 @@ seems to support that. So why not?
 ## Generator
 
 A generator script that takes SAML metadata file(s) and extracts the IdPs based 
-on the entityIds that are set in the configuration file. It writes out two 
+on the entityIDs that are set in the configuration file. It writes out two 
 files:
 
 1. A stripped down SAML metadata file containing only the required entries for
@@ -49,7 +49,7 @@ eduGAIN, verify the signature and place it in the `config/` directory.
 All metadata files you want to use should be placed in the `config/` directory
 and have a `.xml` extension. 
 
-Specify the entityIds of the IdPs you want to support in the 
+Specify the entityIDs of the IdPs you want to support in the 
 `config/config.php` file.
 
 # Running

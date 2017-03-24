@@ -17,7 +17,7 @@
         <ul class="list">
             <li>
                 <form class="entity" method="post">
-                    <button autofocus="autofocus" name="entityId" value="{{ chosenInfo.entityId }}" tabindex="2">{{ chosenInfo.displayName }}</button>
+                    <button autofocus="autofocus" name="entityID" value="{{ lastChosen.entityID }}" tabindex="2">{{ lastChosen.displayName }}</button>
                 </form>
             </li>
         </ul>
@@ -26,10 +26,10 @@
     <div class="listHeader">Institutes with access</div>
 
     <ul id="disco" class="list">
-        {% for key, entity in discoEntities %}
+        {% for key, idp in idpList %}
             <li>
                 <form class="entity" method="post">
-                    <button name="entityId" value="{{ entity.entityId }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ entity.keywords|join(' ') }}">{{ entity.displayName }}</button>
+                    <button name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ idp.keywords|join(' ') }}">{{ idp.displayName }}</button>
                 </form>
             </li>
         {% endfor %}

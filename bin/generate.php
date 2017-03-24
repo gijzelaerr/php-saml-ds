@@ -17,46 +17,43 @@
  */
 require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));
 
+use fkooman\SAML\DS\Config;
 use fkooman\SAML\DS\Parser;
 use fkooman\SAML\DS\TwigTpl;
 
 try {
-    $config = require sprintf('%s/config/config.php', dirname(__DIR__));
-
-    $metadataFiles = glob(sprintf('%s/config/*.xml', dirname(__DIR__)));
+    $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
+    $metadataFiles = glob(sprintf('%s/config/metadata/*.xml', dirname(__DIR__)));
     $parser = new Parser($metadataFiles);
 
-    $entityDescriptors = $parser->generateMetadata($config['idpList']);
+    foreach (array_keys($config->spList->asArray()) as $entityID) {
+        $spFileName = str_replace(['://', '/'], ['_', '_'], $entityID);
+        $entityDescriptors = $parser->generateMetadata($config->spList->$entityID->idpList);
+        $twigTpl = new TwigTpl(
+            [
+                sprintf('%s/views', dirname(__DIR__)),
+            ]
+        );
+        $metadataContent = $twigTpl->render(
+            'metadata',
+            [
+                'entityDescriptors' => $entityDescriptors,
+            ]
+        );
+        $metadataFile = sprintf('%s/data/%s.xml', dirname(__DIR__), $spFileName);
+        if (false === @file_put_contents($metadataFile, $metadataContent)) {
+            throw new RuntimeException(sprintf('unable to write "%s"', $metadataFile));
+        }
 
-    // sort the entities by displayName
-    $sortedList = [];
-    foreach ($entityDescriptors as $entityDescriptor) {
-        $sortedList[$entityDescriptor['displayName'].$entityDescriptor['entityId']] = $entityDescriptor;
-    }
-    ksort($sortedList);
-    $entityDescriptors = array_values($sortedList);
+        // for the idpList we do not want the certificate
+        for ($i = 0; $i < count($entityDescriptors); ++$i) {
+            unset($entityDescriptors[$i]['signingCert']);
+        }
 
-    $twigTpl = new TwigTpl(
-        [
-            sprintf('%s/views', dirname(__DIR__)),
-        ]
-    );
-
-    $metadataContent = $twigTpl->render(
-        'metadata',
-        [
-            'entityDescriptors' => $entityDescriptors,
-        ]
-    );
-
-    $metadataFile = sprintf('%s/data/metadata.xml', dirname(__DIR__));
-    if (false === @file_put_contents($metadataFile, $metadataContent)) {
-        throw new RuntimeException(sprintf('unable to write "%s"', $metadataFile));
-    }
-
-    $discoveryFile = sprintf('%s/data/discovery.json', dirname(__DIR__));
-    if (false === @file_put_contents($discoveryFile, json_encode($entityDescriptors))) {
-        throw new RuntimeException(sprintf('unable to write "%s"', $discoveryFile));
+        $idpListFile = sprintf('%s/data/%s.json', dirname(__DIR__), $spFileName);
+        if (false === @file_put_contents($idpListFile, json_encode($entityDescriptors))) {
+            throw new RuntimeException(sprintf('unable to write "%s"', $idpListFile));
+        }
     }
 } catch (Exception $e) {
     echo sprintf('ERROR: %s', $e->getMessage()).PHP_EOL;

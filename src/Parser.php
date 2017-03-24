@@ -39,14 +39,14 @@ class Parser
     }
 
     /**
-     * Generate a simple SAML metadata file for the provided IdP entityIds
+     * Generate a simple SAML metadata file for the provided IdP entityIDs
      * based on the SAML metadata file provided, e.g. eduGAIN metadata.
      */
-    public function generateMetadata(array $entityIdList)
+    public function generateMetadata(array $entityIDList)
     {
         $entityDescriptors = [];
-        foreach ($entityIdList as $entityId) {
-            $entityDescriptors[] = $this->extractInfo($entityId);
+        foreach ($entityIDList as $entityID) {
+            $entityDescriptors[$entityID] = $this->extractInfo($entityID);
         }
 
         return $entityDescriptors;
@@ -55,21 +55,21 @@ class Parser
     /**
      * @return array
      */
-    private function extractInfo($entityId)
+    private function extractInfo($entityID)
     {
         // support both metadata files with one entry and files with a
         // collection of entries wrapped in EntitiesDescriptor
 
         foreach ($this->metadata as $xml) {
-            $entityInfo = $xml->xpath(sprintf('//md:EntityDescriptor[@entityID="%s"]', $entityId));
+            $entityInfo = $xml->xpath(sprintf('//md:EntityDescriptor[@entityID="%s"]', $entityID));
             if (0 === count($entityInfo)) {
-                // entityId not found
+                // entityID not found
                 continue;
             }
             $idpDescriptor = $entityInfo[0]->xpath('md:IDPSSODescriptor');
 
             return [
-                'entityId' => $entityId,
+                'entityID' => $entityID,
                 'displayName' => $this->getDisplayName($entityInfo[0]),
                 'SSO' => $this->getSSO($idpDescriptor[0]),
                 'signingCert' => $this->getSigningCert($idpDescriptor[0]),
@@ -79,7 +79,7 @@ class Parser
         }
 
         // not found, XXX probably not throw an exception!
-        throw new ParserException(sprintf('entity "%s" not found', $entityId));
+        throw new ParserException(sprintf('entity "%s" not found', $entityID));
     }
 
     /**

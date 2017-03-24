@@ -16,26 +16,20 @@
  */
 require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));
 
+use fkooman\SAML\DS\Config;
+use fkooman\SAML\DS\Http\Cookie;
+use fkooman\SAML\DS\Http\Exception\HttpException;
+use fkooman\SAML\DS\Http\Request;
+use fkooman\SAML\DS\Http\Response;
 use fkooman\SAML\DS\TwigTpl;
+use fkooman\SAML\DS\Validate;
 
 try {
-    // validate request (returnIDParam)
-    if (!array_key_exists('returnIDParam', $_GET)) {
-        throw new RuntimeException('missing "returnIDParam"');
-    }
-    $returnIDParam = $_GET['returnIDParam'];
-    if (1 !== preg_match('/^[a-zA-Z]+$/', $returnIDParam)) {
-        throw new RuntimeException('invalid "returnIDParam"');
-    }
-    // validate request (return)
-    if (!array_key_exists('return', $_GET)) {
-        throw new RuntimeException('missing "return"');
-    }
-    $return = $_GET['return'];
-    // XXX we probably need to be more strict regarding this URL
-    if (false === filter_var($return, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED | FILTER_FLAG_QUERY_REQUIRED)) {
-        throw new RuntimeException('invalid "return"');
-    }
+    $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
+    $request = new Request($_SERVER, $_GET, $_POST);
+
+    list($entityID, $returnIDParam, $return) = Validate::queryParameters($request, $config);
+    $displayName = $config->spList->$entityID->displayName;
 
     $twigTpl = new TwigTpl(
         [
@@ -43,88 +37,79 @@ try {
         ]
     );
 
-    $discoveryFile = sprintf('%s/data/discovery.json', dirname(__DIR__));
-    if (false === $jsonData = @file_get_contents($discoveryFile)) {
-        throw new RuntimeException(sprintf('unable to read "%s"', $discoveryFile));
+    $cookie = new Cookie($request->getServerName(), $request->getRoot(), $config->secureCookie);
+
+    // load the IdP List of thie SP
+    $spFileName = str_replace(['://', '/'], ['_', '_'], $entityID);
+    $idpListFile = sprintf('%s/data/%s.json', dirname(__DIR__), $spFileName);
+    if (false === $jsonData = @file_get_contents($idpListFile)) {
+        throw new RuntimeException(sprintf('unable to read "%s"', $idpListFile));
+    }
+    // XXX check if json_decode worked
+    $idpList = json_decode($jsonData, true);
+
+    if ('GET' === $request->getMethod()) {
+        // display the WAYF page
+        $lastChosen = false;
+        if (isset($cookie->entityID)) {
+            if (array_key_exists($cookie->entityID, $idpList)) {
+                $lastChosen = $idpList[$cookie->entityID];
+                // remove the last chosen IdP from the list of IdPs
+                unset($idpList[$cookie->entityID]);
+            }
+        }
+
+        // XXX maybe start on array_values of idpList?
+        // XXX check return value?
+        usort($idpList, function ($a, $b) {
+            // XXX make sure they have the field 'displayName'!
+            return strcmp($a['displayName'], $b['displayName']);
+        });
+
+        $discoveryPage = $twigTpl->render(
+            'discovery',
+            [
+                'displayName' => $displayName,
+                'lastChosen' => $lastChosen,
+                'idpList' => $idpList,
+            ]
+        );
+
+        $response = new Response(200, [], $discoveryPage);
+        $response->send();
+        exit(0);
     }
 
-    $entityDescriptors = json_decode($jsonData, true);
-
-    // check if we have a filter
-    $filter = null;
-    if ('POST' === $_SERVER['REQUEST_METHOD']) {
-        if (array_key_exists('entityId', $_POST)) {
-            // entry chosen
-            // XXX record it for later (save in cookie)
-
-            setcookie(
-                'entityId',
-                $_POST['entityId'],
-                time() + 60 * 60 * 24 * 365,    // remember for 1 year
-                '',
-                '',
-                false,
-                true
+    if ('POST' === $request->getMethod()) {
+        // an IdP was chosen
+        $idpEntityID = $request->getPostParameter('idpEntityID');
+        if (!array_key_exists($idpEntityID, $idpList)) {
+            throw new HttpException(
+                sprintf('the IdP "%s" is not listed for this SP', $idpEntityID),
+                400
             );
-
-            $queryString = http_build_query([$returnIDParam => $_POST['entityId']]);
-            $returnTo = sprintf('%s&%s', $return, $queryString);
-            http_response_code(302);
-            header(sprintf('Location: %s', $returnTo));
-            exit(0);
         }
 
-        if (array_key_exists('filter', $_POST)) {
-            $filter = !empty($_POST['filter']) ? $_POST['filter'] : null;
-        }
+        $cookie->entityID = $idpEntityID;
+
+        $returnTo = sprintf(
+            '%s&%s',
+            $return,
+            http_build_query(
+                [
+                    $returnIDParam => $idpEntityID,
+                ]
+            )
+        );
+
+        $response = new Response(302, ['Location' => $returnTo]);
+        $response->send();
+        exit(0);
     }
-
-    $lastChosen = false;
-    $chosenInfo = [];
-    if (array_key_exists('entityId', $_COOKIE)) {
-        $lastChosen = true;
-    }
-
-    $discoEntities = [];
-    foreach ($entityDescriptors as $entityDescriptor) {
-        // use non-JS filter
-        if (!is_null($filter)) {
-            $searchString = $entityDescriptor['displayName'].implode('', $entityDescriptor['keywords']);
-            if (false === stripos($searchString, $filter)) {
-                continue;
-            }
-        }
-
-        $queryString = http_build_query([$returnIDParam => $entityDescriptor['entityId']]);
-
-        if ($lastChosen) {
-            if ($entityDescriptor['entityId'] === $_COOKIE['entityId']) {
-                $chosenInfo = [
-                    'entityId' => $entityDescriptor['entityId'],
-                    'displayName' => $entityDescriptor['displayName'],
-                    'idpLogo' => $entityDescriptor['idpLogo'],
-                ];
-                continue;
-            }
-        }
-
-        $discoEntities[] = [
-            'entityId' => $entityDescriptor['entityId'],
-            'displayName' => $entityDescriptor['displayName'],
-            'idpLogo' => $entityDescriptor['idpLogo'],
-            'keywords' => $entityDescriptor['keywords'],
-        ];
-    }
-
-    echo $twigTpl->render(
-        'discovery',
-        [
-            'lastChosen' => $lastChosen,
-            'chosenInfo' => $chosenInfo,
-            'discoEntities' => $discoEntities,
-        ]
-    );
+} catch (HttpException $e) {
+    $response = new Response($e->getCode(), [], $e->getMessage());
+    $response->send();
 } catch (Exception $e) {
-    echo sprintf('ERROR: %s', $e->getMessage()).PHP_EOL;
-    exit(1);
+    $response = new Response(500, [], $e->getMessage());
+    $response->send();
 }
