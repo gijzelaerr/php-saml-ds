@@ -7,12 +7,27 @@
 body {
     font-family: "Helvetica Neue", "Calibri Light", Roboto, sans-serif;
     font-size: 90%;
+    background-color: #eee;
+    color: #555;
+}
+
+div.header {
+    background-color: #fff;
+    padding: 1em;
+    border-bottom: 2px #df7f0c solid;
+    box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    margin-bottom: 3em;
+}
+
+span.serviceName {
+    color: #df7f0c;
+}
+
+div.container {
     max-width: 45em;
     margin: 1em auto;
-    color: #555;
     padding: 0.3em;
     text-align: justify;
-    background-color: #eee;
 }
 
 ul {

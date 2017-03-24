@@ -8,32 +8,38 @@
     <title>Discovery</title>
 </head>
 <body>
-    <form class="filter" method="post">
-        <input {% if not lastChosen %}autofocus="autofocus"{% endif %} name="filter" id="filter" tabindex="1" type="text" autocomplete="off" placeholder="Search for an institution...">
-    </form>
+    <div class="header">
+        Select an institution to login to the service: <span class="serviceName">{{ displayName }}</span>
+    </div>
 
-    {% if lastChosen %}
-        <div class="listHeader">Previously chosen</div>
-        <ul class="list">
-            <li>
-                <form class="entity" method="post">
-                    <button autofocus="autofocus" name="idpEntityID" value="{{ lastChosen.entityID }}" tabindex="2">{{ lastChosen.displayName }}</button>
-                </form>
-            </li>
+    <div class="container">
+        <form class="filter" method="post">
+            <input {% if not lastChosen %}autofocus="autofocus"{% endif %} name="filter" id="filter" tabindex="1" type="text" autocomplete="off" placeholder="Search for an institution...">
+        </form>
+
+        {% if lastChosen %}
+            <div class="listHeader">Previously chosen</div>
+            <ul class="list">
+                <li>
+                    <form class="entity" method="post">
+                        <button autofocus="autofocus" name="idpEntityID" value="{{ lastChosen.entityID }}" tabindex="2">{{ lastChosen.displayName }}</button>
+                    </form>
+                </li>
+            </ul>
+        {% endif %}
+
+        <div class="listHeader">Institutes with access</div>
+
+        <ul id="disco" class="list">
+            {% for key, idp in idpList %}
+                <li>
+                    <form class="entity" method="post">
+                        <button name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ idp.keywords|join(' ') }}">{{ idp.displayName }}</button>
+                    </form>
+                </li>
+            {% endfor %}
         </ul>
-    {% endif %}
-
-    <div class="listHeader">Institutes with access</div>
-
-    <ul id="disco" class="list">
-        {% for key, idp in idpList %}
-            <li>
-                <form class="entity" method="post">
-                    <button name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ idp.keywords|join(' ') }}">{{ idp.displayName }}</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+    </div> <!-- /container -->
     <script src="js/filter.js"></script>
 </body>
 </html>
