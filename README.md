@@ -23,8 +23,8 @@ files:
    service.
 
 The stripped down SAML metadata file is needed because mod_auth_mellon, at 
-least the version shipped with CentOS 7, is unusably slow if you use the entire
-eduGAIN metadata file.
+least the version shipped with CentOS 7, is unusably slow if you use e.g. the 
+entire eduGAIN metadata file.
 
 ## Discovery Service
 
@@ -42,20 +42,20 @@ not really needed for our very minimal use of it.
 # Obtaining Metadata
 
 The `contrib/` directory contains some scripts to download SAML metadata from
-eduGAIN, verify the signature and place it in the `config/` directory.
+eduGAIN, verify the signature and place it in the `config/metadata` directory.
 
 # Configuration
 
-All metadata files you want to use should be placed in the `config/` directory
-and have a `.xml` extension. 
+All metadata files you want to use should be placed in the `config/metadata` 
+directory and have a `.xml` extension. 
 
 Specify the entityIDs of the IdPs you want to support in the 
 `config/config.php` file.
 
 # Running
 
-To run the generator, make sure the metadata files are located in the `config/`
-directory and a writable `data/` directory exists.
+To run the generator, make sure the metadata files are located in the 
+`config/metadata` directory and a writable `data/` directory exists.
 
     $ php bin/generate.php
 
@@ -73,4 +73,4 @@ HTML, but couldn't figure out how. I found
 didn't really seem like a lightweight simple approach.
 
 DiscoJuice is not ready for production use it says, whatever that means and 
-seems to depend on JS to function, that is unacceptable.
+seems to depend heavily on JS to function, so that's not an option either.
