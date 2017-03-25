@@ -1,4 +1,4 @@
 /config/*.php
-/config/*.xml
+/config/metadata
 /data
 /vendor
