@@ -38,24 +38,54 @@ class Parser
         }
     }
 
-    /**
-     * Generate a simple SAML metadata file for the provided IdP entityIDs
-     * based on the SAML metadata file provided, e.g. eduGAIN metadata.
-     */
-    public function generateMetadata(array $entityIDList)
+    public function getEntitiesInfo(array $entityIDList)
     {
         $entityDescriptors = [];
         foreach ($entityIDList as $entityID) {
-            $entityDescriptors[$entityID] = $this->extractInfo($entityID);
+            $entityDescriptors[$entityID] = $this->extractEntityInfo($entityID);
         }
 
         return $entityDescriptors;
     }
 
+    public function getEntitiesLogo(array $entityIDList)
+    {
+        $entityDescriptors = [];
+        foreach ($entityIDList as $entityID) {
+            $entityDescriptors[$entityID] = $this->extractEntityLogo($entityID);
+        }
+
+        return $entityDescriptors;
+    }
+
+    private function extractEntityLogo($entityID)
+    {
+        foreach ($this->metadata as $xml) {
+            $entityInfo = $xml->xpath(sprintf('//md:EntityDescriptor[@entityID="%s"]', $entityID));
+            if (0 === count($entityInfo)) {
+                // entityID not found, try next metadata file
+                continue;
+            }
+            $logoList = [];
+            $result = $entityInfo[0]->xpath('md:IDPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:Logo');
+            foreach ($result as $logoEntry) {
+                $logoList[] = [
+                    'width' => (int) $logoEntry['width'],
+                    'height' => (int) $logoEntry['height'],
+                    'uri' => (string) $logoEntry,
+                ];
+            }
+
+            return $logoList;
+        }
+
+        throw new ParserException(sprintf('entity "%s" not found in any of the metadata files', $entityID));
+    }
+
     /**
      * @return array
      */
-    private function extractInfo($entityID)
+    private function extractEntityInfo($entityID)
     {
         // support both metadata files with one entry and files with a
         // collection of entries wrapped in EntitiesDescriptor
@@ -63,7 +93,7 @@ class Parser
         foreach ($this->metadata as $xml) {
             $entityInfo = $xml->xpath(sprintf('//md:EntityDescriptor[@entityID="%s"]', $entityID));
             if (0 === count($entityInfo)) {
-                // entityID not found
+                // entityID not found, try next metadata file
                 continue;
             }
             $idpDescriptor = $entityInfo[0]->xpath('md:IDPSSODescriptor');
@@ -77,8 +107,7 @@ class Parser
             ];
         }
 
-        // not found, XXX probably not throw an exception!
-        throw new ParserException(sprintf('entity "%s" not found', $entityID));
+        throw new ParserException(sprintf('entity "%s" not found in any of the metadata files', $entityID));
     }
 
     /**

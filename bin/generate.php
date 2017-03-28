@@ -29,7 +29,8 @@ try {
     foreach (array_keys($config->spList->asArray()) as $entityID) {
         // convert all special characters in entityID to _ (same method as mod_auth_mellon)
         $encodedEntityID = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $entityID));
-        $entityDescriptors = $parser->generateMetadata($config->spList->$entityID->idpList);
+        $entityDescriptors = $parser->getEntitiesInfo($config->spList->$entityID->idpList);
+        $entitiesLogos = $parser->getEntitiesLogo($config->spList->$entityID->idpList);
         $twigTpl = new TwigTpl(
             [
                 sprintf('%s/views', dirname(__DIR__)),
@@ -56,6 +57,11 @@ try {
         $idpListFile = sprintf('%s/data/%s.json', dirname(__DIR__), $encodedEntityID);
         if (false === @file_put_contents($idpListFile, json_encode($entityDescriptors))) {
             throw new RuntimeException(sprintf('unable to write "%s"', $idpListFile));
+        }
+
+        $logoListFile = sprintf('%s/data/logoList.json', dirname(__DIR__));
+        if (false === @file_put_contents($logoListFile, json_encode($entitiesLogos))) {
+            throw new RuntimeException(sprintf('unable to write "%s"', $logoListFile));
         }
     }
 } catch (Exception $e) {
