@@ -49,6 +49,11 @@ class Validate
             throw new HttpException('invalid "return" URL', 400);
         }
 
-        return [$entityID, $returnIDParam, $return];
+        $filter = $request->getQueryParameter('filter');
+        if (1 !== preg_match('/^[a-zA-Z0-9]*$/', $filter)) {
+            throw new HttpException('invalid "filter" string', 400);
+        }
+
+        return [$entityID, $returnIDParam, $return, $filter];
     }
 }

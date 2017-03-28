@@ -46,8 +46,8 @@ try {
         }
 
         // for the idpList we do not want the certificate
-        for ($i = 0; $i < count($entityDescriptors); ++$i) {
-            unset($entityDescriptors[$i]['signingCert']);
+        foreach ($entityDescriptors as $k => $v) {
+            unset($entityDescriptors[$k]['signingCert']);
         }
 
         $idpListFile = sprintf('%s/data/%s.json', dirname(__DIR__), $spFileName);

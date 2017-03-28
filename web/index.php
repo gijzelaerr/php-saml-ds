@@ -28,7 +28,9 @@ try {
     $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
     $request = new Request($_SERVER, $_GET, $_POST);
 
-    list($entityID, $returnIDParam, $return) = Validate::queryParameters($request, $config);
+    list($entityID, $returnIDParam, $return, $filter) = Validate::queryParameters($request, $config);
+    $filter = empty($filter) ? false : $filter;
+
     $displayName = $config->spList->$entityID->displayName;
 
     $twigTpl = new TwigTpl(
@@ -51,7 +53,7 @@ try {
     if ('GET' === $request->getMethod()) {
         // display the WAYF page
         $lastChosen = false;
-        if (isset($cookie->entityID)) {
+        if (isset($cookie->entityID) && !$filter) {
             if (array_key_exists($cookie->entityID, $idpList)) {
                 $lastChosen = $idpList[$cookie->entityID];
                 // remove the last chosen IdP from the list of IdPs
@@ -66,9 +68,28 @@ try {
             return strcmp($a['displayName'], $b['displayName']);
         });
 
+        if ($filter) {
+            $lastChosen = false;
+            // remove entries not matching the value in filter
+            $idpListCount = count($idpList);
+            for ($i = 0; $i < $idpListCount; ++$i) {
+                $inKeywords = false !== stripos(implode(' ', $idpList[$i]['keywords']), $filter);
+                $inDisplayName = false !== stripos($idpList[$i]['displayName'], $filter);
+                if (!$inKeywords && !$inDisplayName) {
+                    unset($idpList[$i]);
+                }
+            }
+            $idpList = array_values($idpList);
+        }
+
         $discoveryPage = $twigTpl->render(
             'discovery',
             [
+                'useLogos' => $config->useLogos,
+                'filter' => $filter,
+                'entityID' => $entityID,
+                'returnIDParam' => $returnIDParam,
+                'return' => $return,
                 'displayName' => $displayName,
                 'lastChosen' => $lastChosen,
                 'idpList' => $idpList,

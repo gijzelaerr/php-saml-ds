@@ -13,8 +13,12 @@
     </div>
 
     <div class="container">
-        <form class="filter" method="post">
-            <input {% if not lastChosen %}autofocus="autofocus"{% endif %} name="filter" id="filter" tabindex="1" type="text" autocomplete="off" placeholder="Search for an institution...">
+        <form class="filter" method="get" action="http://localhost:8080/index.php?entityID=https://labrat.eduvpn.nl/saml&returnIDParam=IdP&return=https://labrat.eduvpn.nl/foo/bar?x=a">
+            <input type="hidden" name="returnIDParam" value="{{ returnIDParam }}">
+            <input type="hidden" name="entityID" value="{{ entityID }}">
+            <input type="hidden" name="return" value="{{ return }}">
+
+            <input {% if not lastChosen and not filter %}autofocus="autofocus"{% endif %} value="{{ filter }}" name="filter" id="filter" tabindex="1" type="text" autocomplete="off" placeholder="Search for an institution...">
         </form>
 
         {% if lastChosen %}
@@ -22,7 +26,9 @@
             <ul class="list">
                 <li>
                     <form class="entity" method="post">
-                        <button autofocus="autofocus" name="idpEntityID" value="{{ lastChosen.entityID }}" tabindex="2">{{ lastChosen.displayName }}</button>
+                        <button autofocus="autofocus" name="idpEntityID" value="{{ lastChosen.entityID }}" tabindex="2">
+                            {% if useLogos %}<img src="logo/idp/{{ lastChosen.entityID|url_encode }}.png">{% endif %}{{ lastChosen.displayName }}
+                        </button>
                     </form>
                 </li>
             </ul>
@@ -34,12 +40,14 @@
             {% for key, idp in idpList %}
                 <li>
                     <form class="entity" method="post">
-                        <button name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ idp.keywords|join(' ') }}">{{ idp.displayName }}</button>
+                        <button {% if filter and key == 0 %}autofocus="autofocus"{% endif %} name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ idp.keywords|join(' ') }}">
+                            {% if useLogos %}<img src="logo/idp/{{ idp.entityID|url_encode }}.png">{% endif %}{{ idp.displayName }}
+                        </button>
                     </form>
                 </li>
             {% endfor %}
         </ul>
     </div> <!-- /container -->
-    <script src="js/filter.js"></script>
+    <!-- <script src="js/filter.js"></script> -->
 </body>
 </html>

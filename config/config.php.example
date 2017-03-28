@@ -4,6 +4,10 @@ return [
     // set secureCookie flag, so browser only sends them over HTTPS
     'secureCookie' => false,
 
+    // whether or not to display logos on the discovery page, requires fetching
+    // the logos. See the documentation
+    'useLogos' => false,
+
     // list of SPs for which this service performs discovery
     'spList' => [
         'https://labrat.eduvpn.nl/saml' => [

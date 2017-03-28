@@ -42,6 +42,13 @@ ul li:not(:last-child) {
     border-bottom: 2px solid #eee;
 }
 
+form.entity button img {
+    width: 64px;
+    height: 48px;
+    margin-right: 2em;
+    vertical-align: middle;
+}
+
 form.entity button {
     width: 100%;
     text-align: left;
