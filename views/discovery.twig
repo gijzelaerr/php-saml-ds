@@ -13,7 +13,7 @@
     </div>
 
     <div class="container">
-        <form class="filter" method="get" action="http://localhost:8080/index.php?entityID=https://labrat.eduvpn.nl/saml&returnIDParam=IdP&return=https://labrat.eduvpn.nl/foo/bar?x=a">
+        <form class="filter" method="get">
             <input type="hidden" name="returnIDParam" value="{{ returnIDParam }}">
             <input type="hidden" name="entityID" value="{{ entityID }}">
             <input type="hidden" name="return" value="{{ return }}">
@@ -48,6 +48,6 @@
             {% endfor %}
         </ul>
     </div> <!-- /container -->
-    <!-- <script src="js/filter.js"></script> -->
+    <script src="js/filter.js"></script>
 </body>
 </html>
