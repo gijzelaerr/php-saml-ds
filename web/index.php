@@ -42,8 +42,8 @@ try {
     $cookie = new Cookie($request->getServerName(), $request->getRoot(), $config->secureCookie);
 
     // load the IdP List of thie SP
-    $spFileName = str_replace(['://', '/'], ['_', '_'], $entityID);
-    $idpListFile = sprintf('%s/data/%s.json', dirname(__DIR__), $spFileName);
+    $encodedEntityID = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $entityID));
+    $idpListFile = sprintf('%s/data/%s.json', dirname(__DIR__), $encodedEntityID);
     if (false === $jsonData = @file_get_contents($idpListFile)) {
         throw new RuntimeException(sprintf('unable to read "%s"', $idpListFile));
     }

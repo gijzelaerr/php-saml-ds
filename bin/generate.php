@@ -27,7 +27,8 @@ try {
     $parser = new Parser($metadataFiles);
 
     foreach (array_keys($config->spList->asArray()) as $entityID) {
-        $spFileName = str_replace(['://', '/'], ['_', '_'], $entityID);
+        // convert all special characters in entityID to _ (same method as mod_auth_mellon)
+        $encodedEntityID = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $entityID));
         $entityDescriptors = $parser->generateMetadata($config->spList->$entityID->idpList);
         $twigTpl = new TwigTpl(
             [
@@ -40,17 +41,19 @@ try {
                 'entityDescriptors' => $entityDescriptors,
             ]
         );
-        $metadataFile = sprintf('%s/data/%s.xml', dirname(__DIR__), $spFileName);
+        $metadataFile = sprintf('%s/data/%s.xml', dirname(__DIR__), $encodedEntityID);
         if (false === @file_put_contents($metadataFile, $metadataContent)) {
             throw new RuntimeException(sprintf('unable to write "%s"', $metadataFile));
         }
 
         // for the idpList we do not want the certificate
         foreach ($entityDescriptors as $k => $v) {
+            $entityDescriptors[$k]['encodedEntityID'] = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $k));
             unset($entityDescriptors[$k]['signingCert']);
+            unset($entityDescriptors[$k]['SSO']);
         }
 
-        $idpListFile = sprintf('%s/data/%s.json', dirname(__DIR__), $spFileName);
+        $idpListFile = sprintf('%s/data/%s.json', dirname(__DIR__), $encodedEntityID);
         if (false === @file_put_contents($idpListFile, json_encode($entityDescriptors))) {
             throw new RuntimeException(sprintf('unable to write "%s"', $idpListFile));
         }
