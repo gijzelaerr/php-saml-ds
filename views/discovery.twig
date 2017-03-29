@@ -1,41 +1,38 @@
-<!DOCTYPE html>
+{% extends "base.twig" %}
 
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/screen.css">
-    <title>Discovery</title>
-</head>
-<body>
-    <div class="header">
-        Select an institution to login to the service: <span class="serviceName">{{ displayName }}</span>
-    </div>
+{% block header %}
+    Select an institution to login to <span class="serviceName">{{ displayName }}</span>
+{% endblock %}
+    
+{% block container %}
+    <form class="filter" method="get">
+        <input type="hidden" name="returnIDParam" value="{{ returnIDParam }}">
+        <input type="hidden" name="entityID" value="{{ entityID }}">
+        <input type="hidden" name="return" value="{{ return }}">
 
-    <div class="container">
-        <form class="filter" method="get">
-            <input type="hidden" name="returnIDParam" value="{{ returnIDParam }}">
-            <input type="hidden" name="entityID" value="{{ entityID }}">
-            <input type="hidden" name="return" value="{{ return }}">
+        <input {% if not lastChosen and not filter %}autofocus="autofocus"{% endif %} value="{{ filter }}" name="filter" id="filter" tabindex="1" type="text" autocomplete="off" placeholder="Search for an institution...">
+    </form>
 
-            <input {% if not lastChosen and not filter %}autofocus="autofocus"{% endif %} value="{{ filter }}" name="filter" id="filter" tabindex="1" type="text" autocomplete="off" placeholder="Search for an institution...">
-        </form>
+    {% if lastChosen %}
+        <div class="listHeader">Previously chosen</div>
+        <ul class="list">
+            <li>
+                <form class="entity" method="post">
+                    <button autofocus="autofocus" name="idpEntityID" value="{{ lastChosen.entityID }}" tabindex="2">
+                        {% if useLogos %}<img src="logo/idp/{{ lastChosen.encodedEntityID }}.png">{% endif %}{{ lastChosen.displayName }}
+                    </button>
+                </form>
+            </li>
+        </ul>
+    {% endif %}
 
-        {% if lastChosen %}
-            <div class="listHeader">Previously chosen</div>
-            <ul class="list">
-                <li>
-                    <form class="entity" method="post">
-                        <button autofocus="autofocus" name="idpEntityID" value="{{ lastChosen.entityID }}" tabindex="2">
-                            {% if useLogos %}<img src="logo/idp/{{ lastChosen.encodedEntityID }}.png">{% endif %}{{ lastChosen.displayName }}
-                        </button>
-                    </form>
-                </li>
-            </ul>
-        {% endif %}
+    <div class="listHeader">Institutes with access</div>
 
-        <div class="listHeader">Institutes with access</div>
-
+    {% if idpList is empty %}
+        <div class="emptyList">
+            <em>No institutes available.</em>
+        </div>
+    {% else %}
         <ul id="disco" class="list">
             {% for key, idp in idpList %}
                 <li>
@@ -47,7 +44,5 @@
                 </li>
             {% endfor %}
         </ul>
-    </div> <!-- /container -->
-    <script src="js/filter.js"></script>
-</body>
-</html>
+    {% endif %}
+{% endblock %}

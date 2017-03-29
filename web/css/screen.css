@@ -14,13 +14,15 @@ body {
 div.header {
     background-color: #fff;
     padding: 1em;
-    border-bottom: 2px #df7f0c solid;
+/*    border-bottom: 2px #df7f0c solid;*/
+    border-bottom: 2px #555 solid;
     box-shadow: 0 1px 4px rgba(0,0,0,.2);
     margin-bottom: 3em;
 }
 
 span.serviceName {
-    color: #df7f0c;
+    font-weight: bold;
+/*    color: #df7f0c;*/
 }
 
 div.container {
@@ -30,12 +32,16 @@ div.container {
     text-align: justify;
 }
 
-ul {
+ul, div.emptyList {
     background-color: #fff;
     list-style: none;
     background-color: #fff;
     box-shadow: 0 1px 4px rgba(0,0,0,.2);
     margin-bottom: 2em;
+}
+
+div.emptyList {
+    padding: 1em;
 }
 
 ul li:not(:last-child) {
@@ -55,11 +61,12 @@ form.entity button {
     border: 0;
     background-color: #fff;
     padding: 1em;
-    color: #df7f0c;
+/*    color: #df7f0c;*/
 }
 
 form.entity button:hover, form.entity button:active, form.entity button:focus {
-    background-color: #df7f0c;
+/*    background-color: #df7f0c;*/
+    background-color: #555;
     color: #fff;
     cursor: pointer;
 }
@@ -83,4 +90,13 @@ div.listHeader {
     border: 0;
     width: 100%;
     background-color: #eee;
+}
+
+div.footer {
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+div.footer, div.footer a {
+    color: #888;
 }

@@ -36,6 +36,7 @@ try {
     $twigTpl = new TwigTpl(
         [
             sprintf('%s/views', dirname(__DIR__)),
+            sprintf('%s/config/views', dirname(__DIR__)),
         ]
     );
 
@@ -128,9 +129,25 @@ try {
         exit(0);
     }
 } catch (HttpException $e) {
-    $response = new Response($e->getCode(), [], $e->getMessage());
+    $twigTpl = new TwigTpl(
+        [
+            sprintf('%s/views', dirname(__DIR__)),
+            sprintf('%s/config/views', dirname(__DIR__)),
+        ]
+    );
+    $response = new Response(
+        $e->getCode(),
+        [],
+        $twigTpl->render(
+            'error',
+            [
+                'errorCode' => $e->getCode(),
+                'errorMessage' => $e->getMessage(),
+            ]
+        )
+    );
     $response->send();
 } catch (Exception $e) {
-    $response = new Response(500, [], $e->getMessage());
+    $response = new Response(500, [], htmlentities($e->getMessage(), ENT_QUOTES, 'UTF-8'));
     $response->send();
 }

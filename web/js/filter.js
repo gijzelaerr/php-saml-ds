@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function(event) {
     // XXX disable standard form submit for filter
-    // XXX clean this mess up, use modern ways to bind events
+    //document.getElementById('filter').event.preventDefault();
 
+    // XXX clean this mess up, use modern ways to bind events
     var input = document.getElementById('filter');
     input.onkeyup = function () {
         var filter = input.value.toUpperCase();

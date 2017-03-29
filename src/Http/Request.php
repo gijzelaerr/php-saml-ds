@@ -18,6 +18,8 @@
 
 namespace fkooman\SAML\DS\Http;
 
+use fkooman\SAML\DS\Http\Exception\HttpException;
+
 class Request
 {
     /** @var array */
@@ -62,9 +64,18 @@ class Request
         return $this->getData;
     }
 
+    public function hasQueryParameter($key)
+    {
+        return array_key_exists($key, $this->getData);
+    }
+
     public function getQueryParameter($key)
     {
-        return array_key_exists($key, $this->getData) ? $this->getData[$key] : null;
+        if (!array_key_exists($key, $this->getData)) {
+            throw new HttpException(sprintf('query parameter "%s" not provided', $key), 400);
+        }
+
+        return $this->getData[$key];
     }
 
     /**
@@ -77,7 +88,11 @@ class Request
 
     public function getPostParameter($key)
     {
-        return array_key_exists($key, $this->postData) ? $this->postData[$key] : null;
+        if (!array_key_exists($key, $this->postData)) {
+            throw new HttpException(sprintf('post parameter "%s" not provided', $key), 400);
+        }
+
+        return $this->postData[$key];
     }
 
     /**
