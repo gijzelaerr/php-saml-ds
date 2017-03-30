@@ -4,22 +4,22 @@ return [
     // set secureCookie flag, so browser only sends them over HTTPS
     'secureCookie' => false,
 
-    // whether or not to display logos on the discovery page, requires fetching
-    // the logos. See the documentation
+    // whether or not to display logos on the discovery page, these are 
+    // extracted from the (IdP) metadata if available
     'useLogos' => false,
 
     // list of SPs for which this service performs discovery
     'spList' => [
+        // the entityID of the SP
         'https://labrat.eduvpn.nl/saml' => [
             // the "displayName" for this SP
-            'displayName' => 'eduVPN development server',
+            'displayName' => 'My SAML SP',
 
-            // list of IdPs shown in the discovery for this SP
+            // list of entityIDs of the IdPs that are shown in the discovery
+            // page. Their information is extracted from the SAML metadata
             'idpList' => [
-                'https://idp.surfnet.nl',
-                'https://idp.surf.nl',
-                'https://www.onegini.me',
-                'https://idp.tuxed.net/simplesamlphp/saml2/idp/metadata.php',
+                'https://idp.example.org',
+                'https://idp.example.net',
             ],
         ],
     ],
