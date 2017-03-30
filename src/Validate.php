@@ -37,7 +37,7 @@ class Validate
 
         // returnIDParam MUST be "IdP" for now
         $returnIDParam = $request->getQueryParameter('returnIDParam');
-        if ('IdP' !== $returnIDParam) {
+        if (!in_array($returnIDParam, ['IdP', 'idpentityid'])) {
             throw new HttpException('unsupported "returnIDParam"', 400);
         }
 
