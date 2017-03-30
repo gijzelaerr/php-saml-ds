@@ -48,6 +48,11 @@ class Logo
      */
     public function prepare($encodedEntityID, array $logoList)
     {
+        if (0 === count($logoList)) {
+            // no logo
+            return false;
+        }
+
         $logoUri = self::getBestLogoUri($logoList);
         list($logoData, $mediaType) = $this->obtainLogo($logoUri);
 
