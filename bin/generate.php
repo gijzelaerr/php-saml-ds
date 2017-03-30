@@ -18,8 +18,12 @@
 require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));
 
 use fkooman\SAML\DS\Config;
+use fkooman\SAML\DS\HttpClient\CurlHttpClient;
+use fkooman\SAML\DS\Logo;
 use fkooman\SAML\DS\Parser;
 use fkooman\SAML\DS\TwigTpl;
+
+$logoDir = sprintf('%s/data/logo/idp', dirname(__DIR__));
 
 try {
     $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
@@ -30,7 +34,6 @@ try {
         // convert all special characters in entityID to _ (same method as mod_auth_mellon)
         $encodedEntityID = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $entityID));
         $entityDescriptors = $parser->getEntitiesInfo($config->spList->$entityID->idpList);
-        $entitiesLogos = $parser->getEntitiesLogo($config->spList->$entityID->idpList);
         $twigTpl = new TwigTpl(
             [
                 sprintf('%s/views', dirname(__DIR__)),
@@ -42,26 +45,36 @@ try {
                 'entityDescriptors' => $entityDescriptors,
             ]
         );
+
+        // write a minimal SAML IdP file for every IdP for use by mod_auth_mellon
         $metadataFile = sprintf('%s/data/%s.xml', dirname(__DIR__), $encodedEntityID);
         if (false === @file_put_contents($metadataFile, $metadataContent)) {
             throw new RuntimeException(sprintf('unable to write "%s"', $metadataFile));
         }
 
-        // for the idpList we do not want the certificate
+        // (optionally) download and convert the logos from the IdP metadata
+        if ($config->useLogos) {
+            $httpClient = new CurlHttpClient(['httpsOnly' => false]);
+            $logo = new Logo($logoDir, $httpClient);
+            foreach ($entityDescriptors as $k => $v) {
+                $logo->prepare(
+                    preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $k)),
+                    $v['logoList']
+                );
+            }
+        }
+
+        // add/remove data we (don't) need for displaying the discovery page
         foreach ($entityDescriptors as $k => $v) {
             $entityDescriptors[$k]['encodedEntityID'] = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $k));
             unset($entityDescriptors[$k]['signingCert']);
             unset($entityDescriptors[$k]['SSO']);
+            unset($entityDescriptors[$k]['logoList']);
         }
 
         $idpListFile = sprintf('%s/data/%s.json', dirname(__DIR__), $encodedEntityID);
         if (false === @file_put_contents($idpListFile, json_encode($entityDescriptors))) {
             throw new RuntimeException(sprintf('unable to write "%s"', $idpListFile));
-        }
-
-        $logoListFile = sprintf('%s/data/logoList.json', dirname(__DIR__));
-        if (false === @file_put_contents($logoListFile, json_encode($entitiesLogos))) {
-            throw new RuntimeException(sprintf('unable to write "%s"', $logoListFile));
         }
     }
 } catch (Exception $e) {

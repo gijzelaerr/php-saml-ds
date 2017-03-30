@@ -58,28 +58,19 @@ class Parser
         return $entityDescriptors;
     }
 
-    private function extractEntityLogo($entityID)
+    private function extractEntityLogo(SimpleXMLElement $xml)
     {
-        foreach ($this->metadata as $xml) {
-            $entityInfo = $xml->xpath(sprintf('//md:EntityDescriptor[@entityID="%s"]', $entityID));
-            if (0 === count($entityInfo)) {
-                // entityID not found, try next metadata file
-                continue;
-            }
-            $logoList = [];
-            $result = $entityInfo[0]->xpath('md:IDPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:Logo');
-            foreach ($result as $logoEntry) {
-                $logoList[] = [
-                    'width' => (int) $logoEntry['width'],
-                    'height' => (int) $logoEntry['height'],
-                    'uri' => (string) $logoEntry,
-                ];
-            }
-
-            return $logoList;
+        $logoList = [];
+        $result = $xml->xpath('md:IDPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:Logo');
+        foreach ($result as $logoEntry) {
+            $logoList[] = [
+                'width' => (int) $logoEntry['width'],
+                'height' => (int) $logoEntry['height'],
+                'uri' => (string) $logoEntry,
+            ];
         }
 
-        throw new ParserException(sprintf('entity "%s" not found in any of the metadata files', $entityID));
+        return $logoList;
     }
 
     /**
@@ -104,6 +95,7 @@ class Parser
                 'SSO' => $this->getSSO($idpDescriptor[0]),
                 'signingCert' => $this->getSigningCert($idpDescriptor[0]),
                 'keywords' => $this->getKeywords($entityInfo[0]),
+                'logoList' => $this->extractEntityLogo($entityInfo[0]),
             ];
         }
 

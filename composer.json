@@ -14,9 +14,12 @@
     "license": "Apache-2.0",
     "name": "fkooman/php-saml-ds",
     "require": {
+        "ext-curl": "*",
         "ext-date": "*",
         "ext-filter": "*",
+        "ext-imagick": "*",
         "ext-json": "*",
+        "ext-pcre": "*",
         "ext-spl": "*",
         "ext-xml": "*",
         "php": ">=5.4.0",
