@@ -47,16 +47,6 @@ class Parser
         return $entityDescriptors;
     }
 
-    public function getEntitiesLogo(array $entityIDList)
-    {
-        $entityDescriptors = [];
-        foreach ($entityIDList as $entityID) {
-            $entityDescriptors[$entityID] = $this->extractEntityLogo($entityID);
-        }
-
-        return $entityDescriptors;
-    }
-
     private function extractEntityLogo(SimpleXMLElement $xml)
     {
         $logoList = [];
