@@ -31,7 +31,8 @@ entire eduGAIN metadata file.
 A service that used the JSON file to display a discovery page where the user
 can select their IdP. Currently it is very bare bones, see the screenshot.
 
-![screenshot](contrib/screenshot.png).
+![screenshot](contrib/screenshot.png)
+![screenshot](contrib/screenshot_logos.png)
 
 # Requirements
 
