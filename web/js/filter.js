@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', function(event) {
-    // XXX disable standard form submit for filter
-    //document.getElementById('filter').event.preventDefault();
+    // disable "classic" form submit when JS is enabled
+    document.getElementById('filterForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+    }, true);
 
-    // XXX clean this mess up, use modern ways to bind events
-    var input = document.getElementById('filter');
-    input.onkeyup = function () {
-        var filter = input.value.toUpperCase();
+    document.getElementById('filter').addEventListener('keyup', function(e) {
+        var filter = this.value.toUpperCase();
+        // still clean this mess...
         var lis = document.getElementById('disco').getElementsByTagName('li');
         for (var i = 0; i < lis.length; i++) {
             var name = false;
@@ -21,5 +22,5 @@ document.addEventListener('DOMContentLoaded', function(event) {
                 lis[i].style.display = 'none';
             }
         }
-    }
+    }, true);
 });
