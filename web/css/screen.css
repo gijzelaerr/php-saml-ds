@@ -11,6 +11,10 @@ body {
     color: #555;
 }
 
+p {
+    margin: 0.5em 0;
+}
+
 div.header {
     background-color: #fff;
     padding: 1em;
