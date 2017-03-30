@@ -104,15 +104,22 @@ class Logo
             throw new LogoException(sprintf('got a HTTP %d response from HTTP request to "%s" ', $clientResponse->getStatusCode(), $logoUri));
         }
 
-        // XXX make header case insensitve!
+        if (null === $contentType = $clientResponse->getHeader('Content-Type')) {
+            throw new LogoException(sprintf('unable to determine Content-Type for "%s"', $logoUri));
+        }
+
         return [$clientResponse->getBody(), $clientResponse->getHeader('Content-Type')];
     }
 
     private static function extractDataUriLogo($logoUri)
     {
         // XXX do some better error checking to protect against broken dataUris
-        $mediaType = substr($logoUri, 5, strpos($logoUri, ';'));
-        $logoData = substr($logoUri, strpos($logoUri, ','));
+        $mediaType = substr($logoUri, 5, strpos($logoUri, ';') - 5);
+        $encodedLogoData = substr($logoUri, strpos($logoUri, ','));
+
+        if (false === $logoData = base64_decode($encodedLogoData)) {
+            throw new LogoException('unable to decode data URI logo');
+        }
 
         return [$logoData, $mediaType];
     }
