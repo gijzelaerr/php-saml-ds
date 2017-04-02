@@ -18,15 +18,9 @@ p {
 div.header {
     background-color: #fff;
     padding: 1em;
-/*    border-bottom: 2px #df7f0c solid;*/
     border-bottom: 2px #555 solid;
     box-shadow: 0 1px 4px rgba(0,0,0,.2);
     margin-bottom: 3em;
-}
-
-span.serviceName {
-    font-weight: bold;
-/*    color: #df7f0c;*/
 }
 
 div.container {
@@ -65,11 +59,9 @@ form.entity button {
     border: 0;
     background-color: #fff;
     padding: 1em;
-/*    color: #df7f0c;*/
 }
 
 form.entity button:hover, form.entity button:active, form.entity button:focus {
-/*    background-color: #df7f0c;*/
     background-color: #555;
     color: #fff;
     cursor: pointer;
