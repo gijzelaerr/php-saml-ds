@@ -51,9 +51,9 @@ class Cookie
             $name,
             $value,
             $dateTime->getTimestamp(),
-            $this->path,
-            $this->domain,
-            $this->secure,
+            $this->cookieOptions['path'],
+            $this->cookieOptions['domain'],
+            $this->cookieOptions['secure'],
             true // httponly
         );
 
