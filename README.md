@@ -9,6 +9,25 @@ It follows
 because [mod_auth_mellon](https://github.com/UNINETT/mod_auth_mellon) 
 seems to support that. So why not?
 
+# Features
+
+* Logo support, extracted from (eduGAIN) metadata;
+* Most browsers are supported;
+* JS not required (works perfectly well with JS disabled);
+* Keyboard navigation using `<TAB>` to select (next/previous) IdP;
+* Filter (keyword) support, i.e. only show entries that (string) match the 
+  filter you provide, also without JS.
+
+# Browser Support
+
+The discovery service is tested with the following browsers:
+
+* Firefox (latest)
+* Google Chrome (latest);
+* Safari on iOS (latest);
+* Internet Explorer 11;
+* Edge;
+
 # Components
 
 ## Generator
@@ -73,14 +92,7 @@ metadata file.
 
 I found some other options when investigating how to do SAML discovery:
 
-* [PyFF](https://github.com/leifj/pyFF/)
+* [PyFF](https://github.com/leifj/pyFF/);
 * [DiscoJuice](http://discojuice.org/)
 
-I am not sure what PyFF does. It seems to do _everything_, but I don't know 
-what exactly, how or why. Apparently it can create discovery pages as well in 
-HTML, but couldn't figure out how. I found 
-[this](https://wiki.surfnet.nl/pages/viewpage.action?pageId=50106503), but that 
-didn't really seem like a lightweight simple approach.
-
-DiscoJuice is not ready for production use it says, whatever that means and 
-seems to depend heavily on JS to function, so that's not an option either.
+They were not really what I wanted.
