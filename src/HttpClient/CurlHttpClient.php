@@ -65,7 +65,6 @@ class CurlHttpClient implements HttpClientInterface
             CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_PROTOCOLS => $this->httpsOnly ? CURLPROTO_HTTPS : CURLPROTO_HTTPS | CURLPROTO_HTTP,
             CURLOPT_HEADERFUNCTION => function ($curlChannel, $headerData) use (&$headerList) {
-                // XXX is this secure? mb_strlen?
                 if (false !== strpos($headerData, ':')) {
                     list($key, $value) = explode(':', $headerData, 2);
                     $headerList[trim($key)] = trim($value);

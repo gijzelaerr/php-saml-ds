@@ -1,0 +1,15 @@
+/* only show the logos when width is >= 800px */
+@media (min-width: 800px) {
+    form.entity button {
+        padding-left: 100px;
+        background-repeat: no-repeat;
+        background-position: 1em 50%;
+        height: 75px;
+    }
+
+    {% for entityDescriptor in entityDescriptors %}
+        form.entity button.{{ entityDescriptor.cssEncodedEntityID }} {
+            background-image: url("{{ entityDescriptor.encodedEntityID }}.png");
+        }
+    {% endfor %}
+}

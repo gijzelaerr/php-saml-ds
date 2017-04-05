@@ -33,7 +33,7 @@ try {
     foreach (array_keys($config->spList->asArray()) as $entityID) {
         // convert all special characters in entityID to _ (same method as mod_auth_mellon)
         $encodedEntityID = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $entityID));
-        $entityDescriptors = $parser->getEntitiesInfo($config->spList->$entityID->idpList);
+        $entityDescriptors = $parser->getEntitiesInfo($config->spList->$entityID->idpList->asArray());
         $twigTpl = new TwigTpl(
             [
                 sprintf('%s/views', dirname(__DIR__)),
@@ -61,6 +61,22 @@ try {
                     preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $k)),
                     $v['logoList']
                 );
+            }
+
+            foreach ($entityDescriptors as $k => $v) {
+                $entityDescriptors[$k]['encodedEntityID'] = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $k));
+                $entityDescriptors[$k]['cssEncodedEntityID'] = preg_replace('/\./', '\.', $entityDescriptors[$k]['encodedEntityID']);
+            }
+
+            $logoCss = $twigTpl->render(
+                'logo-css',
+                [
+                    'entityDescriptors' => $entityDescriptors,
+                ]
+            );
+            $logoCssFile = sprintf('%s/logo.css', $logoDir);
+            if (false === @file_put_contents($logoCssFile, $logoCss)) {
+                throw new RuntimeException(sprintf('unable to write "%s"', $logoCssFile));
             }
         }
 

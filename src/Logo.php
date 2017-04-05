@@ -112,7 +112,7 @@ class Logo
             throw new LogoException(sprintf('unable to determine Content-Type for "%s"', $logoUri));
         }
 
-        return [$clientResponse->getBody(), $clientResponse->getHeader('Content-Type')];
+        return [$clientResponse->getBody(), $contentType];
     }
 
     private static function extractDataUriLogo($logoUri)
