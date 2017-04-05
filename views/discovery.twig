@@ -27,22 +27,18 @@
     {% endif %}
 
     <div class="listHeader">Institutes with access</div>
-
-    {% if idpList is empty %}
-        <div class="emptyList">
-            <em>No institutes available.</em>
-        </div>
-    {% else %}
-        <ul id="disco" class="list">
-            {% for key, idp in idpList %}
-                <li>
-                    <form class="entity" method="post">
-                        <button {% if filter and key == 0 %}autofocus="autofocus"{% endif %} name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ idp.keywords|join(' ') }}">
-                            {% if useLogos %}<img src="logo/idp/{{ idp.encodedEntityID }}.png">{% endif %}<span>{{ idp.displayName }}</span>
-                        </button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <div class="noAvailable {% if idpList is empty %}show{% else %}hide{% endif %}">
+        <em>No institutes available.</em>
+    </div>
+    <ul id="disco" class="list">
+        {% for key, idp in idpList %}
+            <li>
+                <form class="entity" method="post">
+                    <button {% if filter and key == 0 %}autofocus="autofocus"{% endif %} name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ idp.keywords|join(' ') }}">
+                        {% if useLogos %}<img src="logo/idp/{{ idp.encodedEntityID }}.png">{% endif %}<span>{{ idp.displayName }}</span>
+                    </button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

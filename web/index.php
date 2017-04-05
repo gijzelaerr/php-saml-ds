@@ -54,7 +54,7 @@ try {
     if ('GET' === $request->getMethod()) {
         // display the WAYF page
         $lastChosen = false;
-        if (isset($cookie->entityID) && !$filter) {
+        if (isset($cookie->entityID)) {
             if (array_key_exists($cookie->entityID, $idpList)) {
                 $lastChosen = $idpList[$cookie->entityID];
                 // remove the last chosen IdP from the list of IdPs
@@ -70,7 +70,6 @@ try {
         });
 
         if ($filter) {
-            $lastChosen = false;
             // remove entries not matching the value in filter
             $idpListCount = count($idpList);
             for ($i = 0; $i < $idpListCount; ++$i) {

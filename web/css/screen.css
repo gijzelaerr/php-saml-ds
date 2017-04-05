@@ -30,7 +30,7 @@ div.container {
     text-align: justify;
 }
 
-ul, div.emptyList {
+ul, div.noAvailable {
     background-color: #fff;
     list-style: none;
     background-color: #fff;
@@ -38,7 +38,7 @@ ul, div.emptyList {
     margin-bottom: 2em;
 }
 
-div.emptyList {
+div.noAvailable {
     padding: 1em;
 }
 
@@ -96,3 +96,11 @@ div.footer {
 div.footer, div.footer a {
     color: #888;
 }
+
+div.show {
+    display: block;
+}
+
+div.hide {
+    display: none;
+}   

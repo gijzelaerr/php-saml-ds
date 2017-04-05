@@ -23,17 +23,30 @@ document.addEventListener('DOMContentLoaded', function(event) {
     document.querySelector('form.filter input#filter').addEventListener('keyup', function(e) {
         var filter = this.value.toUpperCase();
         var entries = document.querySelectorAll('ul#disco li');
+        var visibleCount = 0;
         entries.forEach(function(entry) {
+            // search through all entries in the displayName and the keywords
+            // whether or not to display the entry
             var displayName = entry.querySelector('form.entity button span').innerHTML;
             var keywords = entry.querySelector('form.entity button').dataset.keywords;
-
             if (displayName.toUpperCase().indexOf(filter) !== -1) {
                 entry.style.display = 'list-item';
+                visibleCount++;
             } else if (keywords.toUpperCase().indexOf(filter) !== -1) {
+                visibleCount++;
                 entry.style.display = 'list-item';
             } else {
                 entry.style.display = 'none';
             }
         });
+
+        if(0 === visibleCount) {
+            // no entries visible, show we have no results matching the
+            // filter
+            document.querySelector('div.noAvailable').style.display = 'block';
+        } else {
+            // delete the 'no institutes' div
+            document.querySelector('div.noAvailable').style.display = 'none';
+        }
     });
 });
