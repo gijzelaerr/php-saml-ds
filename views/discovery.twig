@@ -5,7 +5,7 @@
 {% endblock %}
     
 {% block container %}
-    <form id="filterForm" class="filter" method="get">
+    <form class="filter" method="get">
         <input type="hidden" name="returnIDParam" value="{{ returnIDParam }}">
         <input type="hidden" name="entityID" value="{{ entityID }}">
         <input type="hidden" name="return" value="{{ return }}">
@@ -38,7 +38,7 @@
                 <li>
                     <form class="entity" method="post">
                         <button {% if filter and key == 0 %}autofocus="autofocus"{% endif %} name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ idp.keywords|join(' ') }}">
-                            {% if useLogos %}<img src="logo/idp/{{ idp.encodedEntityID }}.png">{% endif %}{{ idp.displayName }}
+                            {% if useLogos %}<img src="logo/idp/{{ idp.encodedEntityID }}.png">{% endif %}<span>{{ idp.displayName }}</span>
                         </button>
                     </form>
                 </li>

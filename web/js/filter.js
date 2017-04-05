@@ -16,27 +16,24 @@
 
 document.addEventListener('DOMContentLoaded', function(event) {
     // disable "classic" form submit when JS is enabled
-    document.getElementById('filterForm').addEventListener('submit', function(e) {
+    document.querySelector('form.filter').addEventListener('submit', function(e) {
         e.preventDefault();
-    }, true);
+    });
 
-    document.getElementById('filter').addEventListener('keyup', function(e) {
+    document.querySelector('form.filter input#filter').addEventListener('keyup', function(e) {
         var filter = this.value.toUpperCase();
-        // still clean this mess...
-        var lis = document.getElementById('disco').getElementsByTagName('li');
-        for (var i = 0; i < lis.length; i++) {
-            var name = false;
-            if(lis[i].getElementsByClassName('name')) {
-                name = lis[i].getElementsByClassName('name')[0].innerHTML;
-            }
-            var keywords = lis[i].getElementsByClassName('name')[0].dataset.keywords;
-            if (name && name.toUpperCase().indexOf(filter) != -1) {
-                lis[i].style.display = 'list-item';
-            } else if(keywords && keywords.toUpperCase().indexOf(filter) != -1) {
-                lis[i].style.display = 'list-item';
+        var entries = document.querySelectorAll('ul#disco li');
+        entries.forEach(function(entry) {
+            var displayName = entry.querySelector('form.entity button span').innerHTML;
+            var keywords = entry.querySelector('form.entity button').dataset.keywords;
+
+            if (displayName.toUpperCase().indexOf(filter) !== -1) {
+                entry.style.display = 'list-item';
+            } else if (keywords.toUpperCase().indexOf(filter) !== -1) {
+                entry.style.display = 'list-item';
             } else {
-                lis[i].style.display = 'none';
+                entry.style.display = 'none';
             }
-        }
-    }, true);
+        });
+    });
 });
