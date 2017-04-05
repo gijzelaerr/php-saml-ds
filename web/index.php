@@ -40,7 +40,13 @@ try {
         ]
     );
 
-    $cookie = new Cookie($request->getServerName(), $request->getRoot(), $config->secureCookie);
+    $cookie = new Cookie(
+        [
+            'domain' => $request->getServerName(),
+            'path' => $request->getRoot(),
+            'secure' => $config->secureCookie,
+        ]
+    );
 
     // load the IdP List of thie SP
     $encodedEntityID = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $entityID));

@@ -17,37 +17,40 @@
 
 namespace fkooman\SAML\DS\Http;
 
+use DateInterval;
+use DateTime;
 use fkooman\SAML\DS\Http\Exception\CookieException;
 
 class Cookie
 {
-    /** @var string */
-    private $domain;
-
-    /** @var string */
-    private $path;
-
-    /** @var bool */
-    private $secure;
+    /** @var array */
+    private $cookieOptions;
 
     /**
      * @param string $domain
      * @param string $path
      * @param bool   $secure
      */
-    public function __construct($domain, $path, $secure)
+    public function __construct(array $cookieOptions = [])
     {
-        $this->domain = $domain;
-        $this->path = $path;
-        $this->secure = (bool) $secure;
+        $defaultOptions = [
+            'domain' => '',
+            'path' => '',
+            'secure' => true,
+        ];
+
+        $this->cookieOptions = array_merge($defaultOptions, $cookieOptions);
     }
 
     public function __set($name, $value)
     {
+        $dateTime = new DateTime();
+        $dateTime->add(new DateInterval('P1y'));
+
         $cookieResult = setcookie(
             $name,
             $value,
-            time() + 60 * 60 * 24 * 365, // expire
+            $dateTime->getTimestamp(),
             $this->path,
             $this->domain,
             $this->secure,
@@ -59,19 +62,22 @@ class Cookie
         }
     }
 
-    public function __isset($key)
+    public function __isset($name)
     {
-        // XXX does $_COOKIE always exist?
-        return array_key_exists($key, $_COOKIE);
+        return array_key_exists($name, $_COOKIE);
     }
 
-    public function __get($key)
+    public function __unset($name)
     {
-        // XXX does $_COOKIE always exist?
-        if (!array_key_exists($key, $_COOKIE)) {
-            throw new CookieException(sprintf('unable to get cookie value for "%s"', $key));
+        $this->$name = false;
+    }
+
+    public function __get($name)
+    {
+        if (!array_key_exists($name, $_COOKIE)) {
+            throw new CookieException(sprintf('unable to get cookie value for "%s"', $name));
         }
 
-        return $_COOKIE[$key];
+        return $_COOKIE[$name];
     }
 }
