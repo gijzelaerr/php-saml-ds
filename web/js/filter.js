@@ -24,18 +24,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
         var filter = this.value.toUpperCase();
         var entries = document.querySelectorAll('ul#disco li');
         var visibleCount = 0;
-        entries.forEach(function(entry) {
+        for(var i = 0; i < entries.length; i++) {
             // search through all entries in the displayName and the keywords
             // whether or not to display the entry
-            var displayName = entry.querySelector('form.entity button span').innerHTML;
-            var keywords = entry.querySelector('form.entity button').dataset.keywords;
+            var displayName = entries[i].querySelector('form.entity button span').innerHTML;
+            var keywords = entries[i].querySelector('form.entity button').dataset.keywords;
             if (displayName.toUpperCase().indexOf(filter) !== -1 || keywords.toUpperCase().indexOf(filter) !== -1) {
-                entry.style.display = 'list-item';
+                entries[i].style.display = 'list-item';
                 visibleCount++;
             } else {
-                entry.style.display = 'none';
+                entries[i].style.display = 'none';
             }
-        });
+        }
 
         if(0 === visibleCount) {
             // no entries visible, show we have no results matching the
