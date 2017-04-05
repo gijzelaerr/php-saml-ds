@@ -29,12 +29,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
             // whether or not to display the entry
             var displayName = entry.querySelector('form.entity button span').innerHTML;
             var keywords = entry.querySelector('form.entity button').dataset.keywords;
-            if (displayName.toUpperCase().indexOf(filter) !== -1) {
+            if (displayName.toUpperCase().indexOf(filter) !== -1 || keywords.toUpperCase().indexOf(filter) !== -1) {
                 entry.style.display = 'list-item';
                 visibleCount++;
-            } else if (keywords.toUpperCase().indexOf(filter) !== -1) {
-                visibleCount++;
-                entry.style.display = 'list-item';
             } else {
                 entry.style.display = 'none';
             }
