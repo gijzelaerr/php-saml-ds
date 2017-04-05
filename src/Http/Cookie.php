@@ -45,7 +45,7 @@ class Cookie
     public function __set($name, $value)
     {
         $dateTime = new DateTime();
-        $dateTime->add(new DateInterval('P1y'));
+        $dateTime->add(new DateInterval('P1Y'));
 
         $cookieResult = setcookie(
             $name,
