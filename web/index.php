@@ -74,8 +74,7 @@ try {
             $idpListCount = count($idpList);
             for ($i = 0; $i < $idpListCount; ++$i) {
                 $inKeywords = false !== stripos(implode(' ', $idpList[$i]['keywords']), $filter);
-                $inDisplayName = false !== stripos($idpList[$i]['displayName'], $filter);
-                if (!$inKeywords && !$inDisplayName) {
+                if (!$inKeywords) {
                     unset($idpList[$i]);
                 }
             }

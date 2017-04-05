@@ -67,6 +67,8 @@ try {
         // add/remove data we (don't) need for displaying the discovery page
         foreach ($entityDescriptors as $k => $v) {
             $entityDescriptors[$k]['encodedEntityID'] = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $k));
+            // add the displayName also to the keywords
+            $entityDescriptors[$k]['keywords'][] = $entityDescriptors[$k]['displayName'];
             unset($entityDescriptors[$k]['signingCert']);
             unset($entityDescriptors[$k]['SSO']);
             unset($entityDescriptors[$k]['logoList']);

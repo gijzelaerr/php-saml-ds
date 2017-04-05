@@ -35,7 +35,7 @@
             <li>
                 <form class="entity" method="post">
                     <button {% if filter and key == 0 %}autofocus="autofocus"{% endif %} name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="name" data-keywords="{{ idp.keywords|join(' ') }}">
-                        {% if useLogos %}<img src="logo/idp/{{ idp.encodedEntityID }}.png">{% endif %}<span>{{ idp.displayName }}</span>
+                        {% if useLogos %}<img src="logo/idp/{{ idp.encodedEntityID }}.png">{% endif %}{{ idp.displayName }}
                     </button>
                 </form>
             </li>

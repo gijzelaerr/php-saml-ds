@@ -25,11 +25,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
         var entries = document.querySelectorAll('ul#disco li');
         var visibleCount = 0;
         for(var i = 0; i < entries.length; i++) {
-            // search through all entries in the displayName and the keywords
-            // whether or not to display the entry
-            var displayName = entries[i].querySelector('form.entity button span').innerHTML;
+            // look through the keywords
             var keywords = entries[i].querySelector('form.entity button').dataset.keywords;
-            if (displayName.toUpperCase().indexOf(filter) !== -1 || keywords.toUpperCase().indexOf(filter) !== -1) {
+            if (keywords.toUpperCase().indexOf(filter) !== -1) {
                 entries[i].style.display = 'list-item';
                 visibleCount++;
             } else {
