@@ -18,6 +18,7 @@
 require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));
 
 use fkooman\SAML\DS\Config;
+use fkooman\SAML\DS\Exception\LogoException;
 use fkooman\SAML\DS\HttpClient\CurlHttpClient;
 use fkooman\SAML\DS\Logo;
 use fkooman\SAML\DS\Parser;
@@ -57,10 +58,15 @@ try {
             $httpClient = new CurlHttpClient(['httpsOnly' => false]);
             $logo = new Logo($logoDir, $httpClient);
             foreach ($entityDescriptors as $k => $v) {
-                $logo->prepare(
-                    preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $k)),
-                    $v['logoList']
-                );
+                try {
+                    $logo->prepare(
+                        preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $k)),
+                        $v['logoList']
+                    );
+                } catch (LogoException $e) {
+                    // error while fetching logo, print error, but keep going
+                    echo sprintf('ERROR: entityID "%s": %s', $k, $e->getMessage()).PHP_EOL;
+                }
             }
 
             foreach ($entityDescriptors as $k => $v) {

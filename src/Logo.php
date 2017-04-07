@@ -103,16 +103,20 @@ class Logo
         }
 
         // try to get the logo and content-type
-        $clientResponse = $this->httpClient->get($logoUri);
-        if (!$clientResponse->isOkay()) {
-            throw new LogoException(sprintf('got a HTTP %d response from HTTP request to "%s" ', $clientResponse->getStatusCode(), $logoUri));
-        }
+        try {
+            $clientResponse = $this->httpClient->get($logoUri);
+            if (!$clientResponse->isOkay()) {
+                throw new LogoException(sprintf('got a HTTP %d response from HTTP request to "%s" ', $clientResponse->getStatusCode(), $logoUri));
+            }
 
-        if (null === $contentType = $clientResponse->getHeader('Content-Type')) {
-            throw new LogoException(sprintf('unable to determine Content-Type for "%s"', $logoUri));
-        }
+            if (null === $contentType = $clientResponse->getHeader('Content-Type')) {
+                throw new LogoException(sprintf('unable to determine Content-Type for "%s"', $logoUri));
+            }
 
-        return [$clientResponse->getBody(), $contentType];
+            return [$clientResponse->getBody(), $contentType];
+        } catch (RuntimeException $e) {
+            throw new LogoException(sprintf('unable to retrieve logo: "%s"', $e->getMessage()));
+        }
     }
 
     private static function extractDataUriLogo($logoUri)
