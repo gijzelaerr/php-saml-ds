@@ -1,5 +1,5 @@
-/* only show the logos when width is >= 800px */
-@media (min-width: 800px) {
+/* only show the logos when width is >= 600px */
+@media (min-width: 600px) {
     form.entity button {
         padding-left: 100px;
         background-repeat: no-repeat;
@@ -7,9 +7,10 @@
         height: 75px;
     }
 
-    {% for entityDescriptor in entityDescriptors %}
-        form.entity button.{{ entityDescriptor.cssEncodedEntityID }} {
-            background-image: url("{{ entityDescriptor.encodedEntityID }}.png");
-        }
-    {% endfor %}
+    /* a list of all IdP logos to be used as backgrounds for the buttons */
+{% for entityDescriptor in entityDescriptors %}
+    form.entity button.{{ entityDescriptor.cssEncodedEntityID }} {
+        background-image: url("{{ entityDescriptor.encodedEntityID }}.png");
+    }
+{% endfor %}
 }
