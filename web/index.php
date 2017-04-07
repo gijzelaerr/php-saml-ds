@@ -33,11 +33,17 @@ try {
 
     $displayName = $config->spList->$entityID->displayName;
 
+    $templateCache = null;
+    if ($config->enableTemplateCache) {
+        $templateCache = sprintf('%s/data/tpl', dirname(__DIR__));
+    }
+
     $twigTpl = new TwigTpl(
         [
             sprintf('%s/views', dirname(__DIR__)),
             sprintf('%s/config/views', dirname(__DIR__)),
-        ]
+        ],
+        $templateCache
     );
 
     $cookie = new Cookie(
