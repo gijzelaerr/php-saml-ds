@@ -96,3 +96,41 @@ I found some other options when investigating how to do SAML discovery:
 * [DiscoJuice](http://discojuice.org/)
 
 They were not really what I wanted.
+
+# Development
+
+    $ git clone https://github.com/fkooman/php-saml-ds.git
+    $ cd php-saml-ds
+    $ composer install
+    $ cp config/config.php.example config/config.php
+
+Now, you need to configure something in `config/config.php` and add some 
+metadata files to read from in `config/metadata`, e.g.:
+    
+    $ mkdir config/metadata
+    $ curl -L -o config/metadata/SURFconext.xml https://engine.surfconext.nl/authentication/proxy/idps-metadata
+
+Create a `data/` directory and run the `generator` script that creates a JSON 
+and SAML metadata file and (optionally) fetches the logos specified in the 
+metadata:
+
+    $ mkdir data
+    $ php bin/generate.php
+
+Create a symlink, so the logos are available under the `web/` directory:
+
+    $ (cd web && ln -s ../data/logo)
+
+Now, you can start the PHP built-in web server:
+
+    $ php -S localhost:8080 -t web/
+
+Browse to [http://localhost:8080/index.php](http://localhost:8080/index.php) 
+and provide the following query parameters:
+
+* `returnIDParam`, e.g. `IdP`;
+* `return`, e.g. `http://foo.example.org/bar?foo=bar`;
+* `entityID`: e.g. `https://sp.example.org/saml`;
+
+The `entityID` MUST match one of the registered SPs in your 
+`config/config.php`.
