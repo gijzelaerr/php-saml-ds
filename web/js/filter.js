@@ -14,28 +14,31 @@
  * limitations under the License.
  */
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function () {
+    "use strict";
     // disable "classic" form submit when JS is enabled
-    document.querySelector("form.filter").addEventListener("submit", function(e) {
+    document.querySelector("form.filter").addEventListener("submit", function (e) {
         e.preventDefault();
     });
 
-    document.querySelector("form.filter input#filter").addEventListener("keyup", function(e) {
+    document.querySelector("form.filter input#filter").addEventListener("keyup", function () {
         var filter = this.value.toUpperCase();
         var entries = document.querySelectorAll("ul#disco li");
         var visibleCount = 0;
-        for(var i = 0; i < entries.length; i++) {
+        var keywords;
+        var i;
+        for (i = 0; i < entries.length; i += 1) {
             // look through the keywords
-            var keywords = entries[i].querySelector("form.entity button").dataset.keywords;
+            keywords = entries[i].querySelector("form.entity button").dataset.keywords;
             if (keywords.toUpperCase().indexOf(filter) !== -1) {
                 entries[i].style.display = "list-item";
-                visibleCount++;
+                visibleCount += 1;
             } else {
                 entries[i].style.display = "none";
             }
         }
 
-        if(0 === visibleCount) {
+        if (0 === visibleCount) {
             // no entries visible, show we have no results matching the
             // filter
             document.querySelector("div.noAvailable").style.display = "block";
