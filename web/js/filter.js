@@ -14,34 +14,34 @@
  * limitations under the License.
  */
 
-document.addEventListener('DOMContentLoaded', function(event) {
+document.addEventListener("DOMContentLoaded", function(event) {
     // disable "classic" form submit when JS is enabled
-    document.querySelector('form.filter').addEventListener('submit', function(e) {
+    document.querySelector("form.filter").addEventListener("submit", function(e) {
         e.preventDefault();
     });
 
-    document.querySelector('form.filter input#filter').addEventListener('keyup', function(e) {
+    document.querySelector("form.filter input#filter").addEventListener("keyup", function(e) {
         var filter = this.value.toUpperCase();
-        var entries = document.querySelectorAll('ul#disco li');
+        var entries = document.querySelectorAll("ul#disco li");
         var visibleCount = 0;
         for(var i = 0; i < entries.length; i++) {
             // look through the keywords
-            var keywords = entries[i].querySelector('form.entity button').dataset.keywords;
+            var keywords = entries[i].querySelector("form.entity button").dataset.keywords;
             if (keywords.toUpperCase().indexOf(filter) !== -1) {
-                entries[i].style.display = 'list-item';
+                entries[i].style.display = "list-item";
                 visibleCount++;
             } else {
-                entries[i].style.display = 'none';
+                entries[i].style.display = "none";
             }
         }
 
         if(0 === visibleCount) {
             // no entries visible, show we have no results matching the
             // filter
-            document.querySelector('div.noAvailable').style.display = 'block';
+            document.querySelector("div.noAvailable").style.display = "block";
         } else {
-            // delete the 'no institutes' div
-            document.querySelector('div.noAvailable').style.display = 'none';
+            // delete the "no institutes" div
+            document.querySelector("div.noAvailable").style.display = "none";
         }
     });
 });
