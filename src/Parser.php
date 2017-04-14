@@ -109,7 +109,7 @@ class Parser
     /**
      * Get the signing certificate.
      *
-     * @return string
+     * @return string|null
      */
     private function getSigningCert(SimpleXMLElement $xml)
     {

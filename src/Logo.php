@@ -76,10 +76,10 @@ class Logo
     {
         try {
             $imagick = new Imagick($originalFileName);
-            $imagick->setImageBackgroundColor('transparent');
-            $imagick->thumbnailImage(64, 48, true, true);
-            $imagick->setImageFormat('png');
-            $optimizedFileName = $imagick->getImageBlob();
+            $imagick->setimagebackgroundcolor('transparent');
+            $imagick->thumbnailimage(64, 48, true, true);
+            $imagick->setimageformat('png');
+            $optimizedFileName = $imagick->getimageblob();
             $imagick->destroy();
 
             return $optimizedFileName;
