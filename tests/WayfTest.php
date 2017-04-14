@@ -31,7 +31,7 @@ class WayfTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $config = Config::fromFile('config/config.php');
+        $config = Config::fromFile(sprintf('%s/config/config.php', __DIR__));
         $tpl = new TestTpl();
         $cookie = new TestCookie();
         $this->w = new Wayf($config, $tpl, $cookie, sprintf('%s/data', dirname(__DIR__)));
