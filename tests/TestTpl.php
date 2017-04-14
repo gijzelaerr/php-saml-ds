@@ -15,22 +15,18 @@
  * limitations under the License.
  */
 
-namespace fkooman\SAML\DS\Http\Exception;
+namespace fkooman\SAML\DS\Tests;
 
-use Exception;
+use fkooman\SAML\DS\TplInterface;
 
-class HttpException extends Exception
+class TestTpl implements TplInterface
 {
-    /** @var array */
-    private $headers = [];
-
-    public function setHeaders(array $headers)
+    public function render($templateName, array $templateVariables)
     {
-        $this->headers = $headers;
-    }
-
-    public function getHeaders()
-    {
-        return $this->headers;
+        return json_encode(
+            [
+                $templateName => $templateVariables,
+            ]
+        );
     }
 }

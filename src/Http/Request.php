@@ -65,12 +65,12 @@ class Request
 
     public function hasQueryParameter($key)
     {
-        return array_key_exists($key, $this->getData);
+        return array_key_exists($key, $this->getData) && !empty($this->getData[$key]);
     }
 
     public function getQueryParameter($key)
     {
-        if (!array_key_exists($key, $this->getData)) {
+        if (!$this->hasQueryParameter($key)) {
             throw new HttpException(sprintf('query parameter "%s" not provided', $key), 400);
         }
 
@@ -87,7 +87,7 @@ class Request
 
     public function getPostParameter($key)
     {
-        if (!array_key_exists($key, $this->postData)) {
+        if (!array_key_exists($key, $this->postData) && !empty($this->postData[$key])) {
             throw new HttpException(sprintf('post parameter "%s" not provided', $key), 400);
         }
 
@@ -105,21 +105,6 @@ class Request
     /**
      * @return string
      */
-    public function getAuthority()
-    {
-        $requestScheme = array_key_exists('REQUEST_SCHEME', $this->serverData) ? $this->serverData['REQUEST_SCHEME'] : 'http';
-        $serverName = $this->serverData['SERVER_NAME'];
-        $serverPort = (int) $this->serverData['SERVER_PORT'];
-        if (('https' === $requestScheme && 443 !== $serverPort) || ('http' === $requestScheme && 80 !== $serverPort)) {
-            return sprintf('%s://%s:%d', $requestScheme, $serverName, $serverPort);
-        }
-
-        return sprintf('%s://%s', $requestScheme, $serverName);
-    }
-
-    /**
-     * @return string
-     */
     public function getRoot()
     {
         $rootDir = dirname($this->serverData['SCRIPT_NAME']);
@@ -128,13 +113,5 @@ class Request
         }
 
         return $rootDir;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRootUri()
-    {
-        return sprintf('%s%s', $this->getAuthority(), $this->getRoot());
     }
 }

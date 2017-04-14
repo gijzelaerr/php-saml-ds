@@ -21,7 +21,7 @@ use DateInterval;
 use DateTime;
 use fkooman\SAML\DS\Http\Exception\CookieException;
 
-class Cookie
+class Cookie implements CookieInterface
 {
     /** @var array */
     private $cookieOptions;
@@ -42,7 +42,7 @@ class Cookie
         $this->cookieOptions = array_merge($defaultOptions, $cookieOptions);
     }
 
-    public function __set($name, $value)
+    public function set($name, $value)
     {
         $dateTime = new DateTime();
         $dateTime->add(new DateInterval('P1Y'));
@@ -62,17 +62,17 @@ class Cookie
         }
     }
 
-    public function __isset($name)
+    public function has($name)
     {
         return array_key_exists($name, $_COOKIE);
     }
 
-    public function __unset($name)
+    public function delete($name)
     {
-        $this->$name = false;
+        $this->set($name, false);
     }
 
-    public function __get($name)
+    public function get($name)
     {
         if (!array_key_exists($name, $_COOKIE)) {
             throw new CookieException(sprintf('unable to get cookie value for "%s"', $name));

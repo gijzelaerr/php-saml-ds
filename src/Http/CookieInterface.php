@@ -15,22 +15,15 @@
  * limitations under the License.
  */
 
-namespace fkooman\SAML\DS\Http\Exception;
+namespace fkooman\SAML\DS\Http;
 
-use Exception;
-
-class HttpException extends Exception
+interface CookieInterface
 {
-    /** @var array */
-    private $headers = [];
+    public function set($name, $value);
 
-    public function setHeaders(array $headers)
-    {
-        $this->headers = $headers;
-    }
+    public function has($name);
 
-    public function getHeaders()
-    {
-        return $this->headers;
-    }
+    public function delete($name);
+
+    public function get($name);
 }

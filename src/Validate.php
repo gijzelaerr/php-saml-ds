@@ -22,41 +22,67 @@ use fkooman\SAML\DS\Http\Request;
 
 class Validate
 {
-    public static function queryParameters(Request $request, Config $config)
+    public static function request(Request $request)
     {
-        // entityID parameter MUST be registered in configuration as an
-        // entityID for an SP
-        $entityID = $request->getQueryParameter('entityID');
-        if (!isset($config->spList->$entityID)) {
-            throw new HttpException(
-                sprintf('SP with entityID "%s" not registered in discovery service', $entityID),
-                400
-            );
-        }
+        switch ($request->getMethod()) {
+            case 'GET':
+                self::get($request);
+                break;
+            case 'POST':
+                self::post($request);
+                break;
+            default:
+                $e = new HttpException('only "GET" and "POST" are supported', 405);
+                $e->setHeaders(['Allow' => 'GET,POST']);
 
-        // returnIDParam MUST be "IdP" for now
-        $returnIDParam = $request->getQueryParameter('returnIDParam');
-        if (!in_array($returnIDParam, ['IdP', 'idpentityid'])) {
-            throw new HttpException('unsupported "returnIDParam"', 400);
+                throw $e;
         }
-
-        // return MUST be a valid HTTPS URI
-        // XXX should we require this to be registered as well?
-        $return = $request->getQueryParameter('return');
-        $filterFlags = FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED | FILTER_FLAG_QUERY_REQUIRED;
-        if (false === filter_var($return, FILTER_VALIDATE_URL, $filterFlags)) {
-            throw new HttpException('invalid "return" URL', 400);
-        }
-
-        // filter is optional
-        $filter = null;
-        if ($request->hasQueryParameter('filter')) {
-            $filter = $request->getQueryParameter('filter');
-            if (1 !== preg_match('/^[a-zA-Z0-9]*$/', $filter)) {
-                throw new HttpException('invalid "filter" string', 400);
-            }
-        }
-
-        return [$entityID, $returnIDParam, $return, $filter];
     }
+
+    private static function get(Request $request)
+    {
+    }
+
+    private static function post(Request $request)
+    {
+    }
+
+//    public static function queryParameters(Request $request, array $spList)
+//    {
+//        // entityID parameter MUST be registered in configuration as an
+//        // entityID for an SP
+//        $entityID = $request->getQueryParameter('entityID');
+//        if (!in_array($entityID, $spList)) {
+//            throw new HttpException(
+//                sprintf('SP with entityID "%s" not registered in discovery service', $entityID),
+//                400
+//            );
+//        }
+
+//        // returnIDParam MUST be "IdP" for now
+//        $returnIDParam = $request->getQueryParameter('returnIDParam');
+//        if (!in_array($returnIDParam, ['IdP', 'idpentityid'])) {
+//            throw new HttpException('unsupported "returnIDParam"', 400);
+//        }
+
+//        // return MUST be a valid HTTPS URI
+//        // XXX should we require this to be registered as well?
+//        $return = $request->getQueryParameter('return');
+//        $filterFlags = FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED | FILTER_FLAG_QUERY_REQUIRED;
+//        if (false === filter_var($return, FILTER_VALIDATE_URL, $filterFlags)) {
+//            throw new HttpException('invalid "return" URL', 400);
+//        }
+
+//        // filter is optional
+//        $filter = null;
+//        if ($request->hasQueryParameter('filter')) {
+//            $filter = $request->getQueryParameter('filter');
+//            if (1 !== preg_match('/^[a-zA-Z0-9]*$/', $filter)) {
+//                throw new HttpException('invalid "filter" string', 400);
+//            }
+//            // XXX if filter is provided but empty that is a problem!
+//        }
+
+//        return [$entityID, $returnIDParam, $return, $filter];
+//    }
 }

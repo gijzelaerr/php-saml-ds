@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="https://idp.tuxed.net/simplesamlphp/saml2/idp/metadata.php">
+  <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:Extensions>
+      <mdui:UIInfo xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui">
+        <mdui:DisplayName xml:lang="en">FrKoIdP</mdui:DisplayName>
+        <mdui:Logo width="60" height="41">https://idp.tuxed.net/simplesamlphp/resources/icons/ssplogo-fish-small.png</mdui:Logo>
+      </mdui:UIInfo>
+    </md:Extensions>
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDAzCCAeugAwIBAgIJAOE4cayCtFBXMA0GCSqGSIb3DQEBCwUAMBgxFjAUBgNVBAMMDWlkcC50dXhlZC5uZXQwHhcNMTcwMzA4MTMxMzAxWhcNMjcwMzA4MTMxMzAxWjAYMRYwFAYDVQQDDA1pZHAudHV4ZWQubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAljhwV2yDBYaQ0OiOjj9a+rB8ZU9i4Kb0KMrapHpb87sCjpL3R3nSngMpGodgTm2DoV/ZwskFat+yn2o8ZxYmwkfUe9aYRHWgmsdmVdv+mvo5H5Frn5nC/BxuEx1i6gJwyOYVAHb6968rQQsi+Bx9fUVnbpCeE4jDlV3Ko1EeTVkxso/BZa9cWiExWOC+EGJ/Kcp0hygqZBR9a8Kqa48oiXSo8GmXCrDV6aOxb7vFxzK4IMNNa1TDla3aRAYmS+abP60AHUxKJIZzPnzUaFTtuqCIN0xtvpcaWviymZXa0R1JTVxYB+Sqhr9+flv4C8xoZ4yJQEeR/MgTCh2qu0lwrQIDAQABo1AwTjAdBgNVHQ4EFgQUD4qdYSnAcrqS/8BxayFmVWVkOsUwHwYDVR0jBBgwFoAUD4qdYSnAcrqS/8BxayFmVWVkOsUwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAN7NBlOWqnl++Qu+wdEL9MxPgdpKDrAhqfJhGtiwL03lUB4q6o0c8/jT/VlXK1F04NU+j7M6G84kFVsTMbgUndWlj6Ea6eenb+K6CPpQpLtPTO4stMxWCNu2aROxw1/mPX9RSRgN9cfjUyn8rA7siiSFVUwFmcB3v95U1nKUzhPKIvmFketQC8lyKwgW0Q+Rm4Ea6I1eVdky9FbIKrdyF0lKH3aWWyiNDi0OxAPaCX1lumrPG9g4+gKYkB4IPW+KV1svj5MYfA0Dg8Es1SFIRXbSOngV0vrzejHtxPLB/MLTBBK1vel1I+pOrvUewqjcBVTO+VkDCjXJAlrWwIn7RPg==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDAzCCAeugAwIBAgIJAOE4cayCtFBXMA0GCSqGSIb3DQEBCwUAMBgxFjAUBgNVBAMMDWlkcC50dXhlZC5uZXQwHhcNMTcwMzA4MTMxMzAxWhcNMjcwMzA4MTMxMzAxWjAYMRYwFAYDVQQDDA1pZHAudHV4ZWQubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAljhwV2yDBYaQ0OiOjj9a+rB8ZU9i4Kb0KMrapHpb87sCjpL3R3nSngMpGodgTm2DoV/ZwskFat+yn2o8ZxYmwkfUe9aYRHWgmsdmVdv+mvo5H5Frn5nC/BxuEx1i6gJwyOYVAHb6968rQQsi+Bx9fUVnbpCeE4jDlV3Ko1EeTVkxso/BZa9cWiExWOC+EGJ/Kcp0hygqZBR9a8Kqa48oiXSo8GmXCrDV6aOxb7vFxzK4IMNNa1TDla3aRAYmS+abP60AHUxKJIZzPnzUaFTtuqCIN0xtvpcaWviymZXa0R1JTVxYB+Sqhr9+flv4C8xoZ4yJQEeR/MgTCh2qu0lwrQIDAQABo1AwTjAdBgNVHQ4EFgQUD4qdYSnAcrqS/8BxayFmVWVkOsUwHwYDVR0jBBgwFoAUD4qdYSnAcrqS/8BxayFmVWVkOsUwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAN7NBlOWqnl++Qu+wdEL9MxPgdpKDrAhqfJhGtiwL03lUB4q6o0c8/jT/VlXK1F04NU+j7M6G84kFVsTMbgUndWlj6Ea6eenb+K6CPpQpLtPTO4stMxWCNu2aROxw1/mPX9RSRgN9cfjUyn8rA7siiSFVUwFmcB3v95U1nKUzhPKIvmFketQC8lyKwgW0Q+Rm4Ea6I1eVdky9FbIKrdyF0lKH3aWWyiNDi0OxAPaCX1lumrPG9g4+gKYkB4IPW+KV1svj5MYfA0Dg8Es1SFIRXbSOngV0vrzejHtxPLB/MLTBBK1vel1I+pOrvUewqjcBVTO+VkDCjXJAlrWwIn7RPg==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.tuxed.net/simplesamlphp/saml2/idp/SingleLogoutService.php"/>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.tuxed.net/simplesamlphp/saml2/idp/SSOService.php"/>
+  </md:IDPSSODescriptor>
+  <md:ContactPerson contactType="technical">
+    <md:GivenName>Fran&#xE7;ois</md:GivenName>
+    <md:SurName>Kooman</md:SurName>
+    <md:EmailAddress>fkooman@tuxed.net</md:EmailAddress>
+  </md:ContactPerson>
+</md:EntityDescriptor>

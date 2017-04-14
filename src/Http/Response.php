@@ -35,6 +35,11 @@ class Response
         $this->body = (string) $body;
     }
 
+    public function getStatusCode()
+    {
+        return $this->statusCode;
+    }
+
     public function getHeaders()
     {
         return $this->headers;
@@ -48,6 +53,11 @@ class Response
     public function setHeader($key, $value)
     {
         $this->headers[$key] = $value;
+    }
+
+    public function getHeader($key)
+    {
+        return $this->headers[$key];
     }
 
     public function send()

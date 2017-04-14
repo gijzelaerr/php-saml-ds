@@ -7,7 +7,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "fkooman\\SAML\\DS\\": "src/"
+            "fkooman\\SAML\\DS\\": "src/",
+            "fkooman\\SAML\\DS\\Tests\\": "tests/"
         }
     },
     "description": "SAML Discovery Service",
@@ -24,5 +25,8 @@
         "ext-xml": "*",
         "php": ">=5.4.0",
         "twig/twig": "^1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8"
     }
 }

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<md:EntitiesDescriptor xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+    <md:EntityDescriptor entityID="https://idp.tuxed.net/simplesamlphp/saml2/idp/metadata.php">
+        <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+          <md:KeyDescriptor use="signing">
+            <ds:KeyInfo>
+              <ds:X509Data>
+                <ds:X509Certificate>
+                    MIIDAzCCAeugAwIBAgIJAOE4cayCtFBXMA0GCSqGSIb3DQEBCwUAMBgxFjAUBgNVBAMMDWlkcC50dXhlZC5uZXQwHhcNMTcwMzA4MTMxMzAxWhcNMjcwMzA4MTMxMzAxWjAYMRYwFAYDVQQDDA1pZHAudHV4ZWQubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAljhwV2yDBYaQ0OiOjj9a+rB8ZU9i4Kb0KMrapHpb87sCjpL3R3nSngMpGodgTm2DoV/ZwskFat+yn2o8ZxYmwkfUe9aYRHWgmsdmVdv+mvo5H5Frn5nC/BxuEx1i6gJwyOYVAHb6968rQQsi+Bx9fUVnbpCeE4jDlV3Ko1EeTVkxso/BZa9cWiExWOC+EGJ/Kcp0hygqZBR9a8Kqa48oiXSo8GmXCrDV6aOxb7vFxzK4IMNNa1TDla3aRAYmS+abP60AHUxKJIZzPnzUaFTtuqCIN0xtvpcaWviymZXa0R1JTVxYB+Sqhr9+flv4C8xoZ4yJQEeR/MgTCh2qu0lwrQIDAQABo1AwTjAdBgNVHQ4EFgQUD4qdYSnAcrqS/8BxayFmVWVkOsUwHwYDVR0jBBgwFoAUD4qdYSnAcrqS/8BxayFmVWVkOsUwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAN7NBlOWqnl++Qu+wdEL9MxPgdpKDrAhqfJhGtiwL03lUB4q6o0c8/jT/VlXK1F04NU+j7M6G84kFVsTMbgUndWlj6Ea6eenb+K6CPpQpLtPTO4stMxWCNu2aROxw1/mPX9RSRgN9cfjUyn8rA7siiSFVUwFmcB3v95U1nKUzhPKIvmFketQC8lyKwgW0Q+Rm4Ea6I1eVdky9FbIKrdyF0lKH3aWWyiNDi0OxAPaCX1lumrPG9g4+gKYkB4IPW+KV1svj5MYfA0Dg8Es1SFIRXbSOngV0vrzejHtxPLB/MLTBBK1vel1I+pOrvUewqjcBVTO+VkDCjXJAlrWwIn7RPg==
+                </ds:X509Certificate>
+              </ds:X509Data>
+            </ds:KeyInfo>
+          </md:KeyDescriptor>
+          <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.tuxed.net/simplesamlphp/saml2/idp/SSOService.php"/>
+        </md:IDPSSODescriptor>
+    </md:EntityDescriptor>
+    <md:EntityDescriptor entityID="https://engine.surfconext.nl/authentication/idp/metadata">
+        <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+          <md:KeyDescriptor use="signing">
+            <ds:KeyInfo>
+              <ds:X509Data>
+                <ds:X509Certificate>
+                    MIID3zCCAsegAwIBAgIJAMVC9xn1ZfsuMA0GCSqGSIb3DQEBCwUAMIGFMQswCQYDVQQGEwJOTDEQMA4GA1UECAwHVXRyZWNodDEQMA4GA1UEBwwHVXRyZWNodDEVMBMGA1UECgwMU1VSRm5ldCBCLlYuMRMwEQYDVQQLDApTVVJGY29uZXh0MSYwJAYDVQQDDB1lbmdpbmUuc3VyZmNvbmV4dC5ubCAyMDE0MDUwNTAeFw0xNDA1MDUxNDIyMzVaFw0xOTA1MDUxNDIyMzVaMIGFMQswCQYDVQQGEwJOTDEQMA4GA1UECAwHVXRyZWNodDEQMA4GA1UEBwwHVXRyZWNodDEVMBMGA1UECgwMU1VSRm5ldCBCLlYuMRMwEQYDVQQLDApTVVJGY29uZXh0MSYwJAYDVQQDDB1lbmdpbmUuc3VyZmNvbmV4dC5ubCAyMDE0MDUwNTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKthMDbB0jKHefPzmRu9t2h7iLP4wAXr42bHpjzTEk6gttHFb4l/hFiz1YBI88TjiH6hVjnozo/YHA2c51us+Y7g0XoS7653lbUN/EHzvDMuyis4Xi2Ijf1A/OUQfH1iFUWttIgtWK9+fatXoGUS6tirQvrzVh6ZstEp1xbpo1SF6UoVl+fh7tM81qz+Crr/Kroan0UjpZOFTwxPoK6fdLgMAieKSCRmBGpbJHbQ2xxbdykBBrBbdfzIX4CDepfjE9h/40ldw5jRn3e392jrS6htk23N9BWWrpBT5QCk0kH3h/6F1Dm6TkyG9CDtt73/anuRkvXbeygI4wml9bL3rE8CAwEAAaNQME4wHQYDVR0OBBYEFD+Ac7akFxaMhBQAjVfvgGfY8hNKMB8GA1UdIwQYMBaAFD+Ac7akFxaMhBQAjVfvgGfY8hNKMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAC8L9D67CxIhGo5aGVu63WqRHBNOdo/FAGI7LURDFeRmG5nRw/VXzJLGJksh4FSkx7aPrxNWF1uFiDZ80EuYQuIv7bDLblK31ZEbdg1R9LgiZCdYSr464I7yXQY9o6FiNtSKZkQO8EsscJPPy/Zp4uHAnADWACkOUHiCbcKiUUFu66dX0Wr/v53Gekz487GgVRs8HEeT9MU1reBKRgdENR8PNg4rbQfLc3YQKLWK7yWnn/RenjDpuCiePj8N8/80tGgrNgK/6fzM3zI18sSywnXLswxqDb/J+jgVxnQ6MrsTf1urM8MnfcxG/82oHIwfMh/sXPCZpo+DTLkhQxctJ3M=
+                </ds:X509Certificate>
+              </ds:X509Data>
+            </ds:KeyInfo>
+          </md:KeyDescriptor>
+          <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://engine.surfconext.nl/authentication/idp/single-sign-on"/>
+        </md:IDPSSODescriptor>
+    </md:EntityDescriptor>
+</md:EntitiesDescriptor>
