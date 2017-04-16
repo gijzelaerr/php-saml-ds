@@ -103,13 +103,12 @@ class Wayf
         if ($filter) {
             // remove entries not matching the value in filter
             $idpListCount = count($idpList);
-            for ($i = 0; $i < $idpListCount; ++$i) {
-                $inKeywords = false !== stripos(implode(' ', $idpList[$i]['keywords']), $filter);
+            foreach ($idpList as $k => $v) {
+                $inKeywords = false !== stripos(implode(' ', $v['keywords']), $filter);
                 if (!$inKeywords) {
-                    unset($idpList[$i]);
+                    unset($idpList[$k]);
                 }
             }
-            $idpList = array_values($idpList);
         }
 
         $discoveryPage = $this->tpl->render(
@@ -122,7 +121,7 @@ class Wayf
                 'return' => $return,
                 'displayName' => $displayName,
                 'lastChosen' => $lastChosen,
-                'idpList' => $idpList,
+                'idpList' => array_values($idpList),
             ]
         );
 
