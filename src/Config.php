@@ -34,6 +34,8 @@ class Config
 
     /**
      * @param string $key
+     *
+     * @return bool
      */
     public function __isset($key)
     {
@@ -43,7 +45,7 @@ class Config
     /**
      * @param string $key
      *
-     * @return object|string|array
+     * @return mixed
      */
     public function __get($key)
     {

@@ -17,7 +17,7 @@
 require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));
 
 use fkooman\SAML\DS\Config;
-use fkooman\SAML\DS\Http\Cookie;
+use fkooman\SAML\DS\Http\HttpCookie;
 use fkooman\SAML\DS\Http\Request;
 use fkooman\SAML\DS\Http\Response;
 use fkooman\SAML\DS\TwigTpl;
@@ -41,7 +41,7 @@ try {
 
     $request = new Request($_SERVER, $_GET, $_POST);
 
-    $cookie = new Cookie(
+    $cookie = new HttpCookie(
         [
             'domain' => $request->getServerName(),
             'path' => $request->getRoot(),

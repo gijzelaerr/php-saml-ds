@@ -21,7 +21,7 @@ use DateInterval;
 use DateTime;
 use fkooman\SAML\DS\Http\Exception\CookieException;
 
-class Cookie implements CookieInterface
+class HttpCookie implements CookieInterface
 {
     /** @var array */
     private $cookieOptions;

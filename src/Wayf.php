@@ -85,14 +85,15 @@ class Wayf
         }
         // end input
 
-        $displayName = $this->config->spList->$spEntityID->displayName;
         $idpList = $this->getIdPList($spEntityID);
+        // XXX make sure there is a displayName!
+        $displayName = $this->config->spList->$spEntityID->displayName;
 
         // do we have an already previous chosen IdP?
         $lastChosen = false;
         if ($this->cookie->has('entityID')) {
             $idpEntityID = $this->cookie->get('entityID');
-            if (array_key_exists($idpEntityID, $idpList)) {
+            if (in_array($idpEntityID, $this->config->spList->$spEntityID->idpList->asArray())) {
                 $lastChosen = $idpList[$idpEntityID];
                 // remove the last chosen IdP from the list of IdPs
                 unset($idpList[$idpEntityID]);
@@ -204,7 +205,7 @@ class Wayf
 
         // XXX maybe start on array_values of idpList?
         // XXX check return value?
-        usort($idpList, function ($a, $b) {
+        uasort($idpList, function ($a, $b) {
             // XXX make sure they have the field 'displayName'!
             return strcmp($a['displayName'], $b['displayName']);
         });
