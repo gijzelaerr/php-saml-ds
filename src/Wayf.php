@@ -86,6 +86,14 @@ class Wayf
         // end input
 
         $idpList = $this->getIdPList($spEntityID);
+        // XXX what if the count is 0?
+        if (1 === count($idpList)) {
+            // we only have 1 IdP, so redirect immediately back to the SP
+            $idpEntityID = array_keys($idpList)[0];
+
+            return $this->returnTo($return, $returnIDParam, $idpEntityID);
+        }
+
         // XXX make sure there is a displayName!
         $displayName = $this->config->spList->$spEntityID->displayName;
 
@@ -152,17 +160,7 @@ class Wayf
 
         $this->cookie->set('entityID', $idpEntityID);
 
-        $returnTo = sprintf(
-            '%s&%s',
-            $return,
-            http_build_query(
-                [
-                    $returnIDParam => $idpEntityID,
-                ]
-            )
-        );
-
-        return new Response(302, ['Location' => $returnTo]);
+        return $this->returnTo($return, $returnIDParam, $idpEntityID);
     }
 
     /**
@@ -210,5 +208,23 @@ class Wayf
         });
 
         return $idpList;
+    }
+
+    /**
+     * @return Http\Response
+     */
+    private function returnTo($return, $returnIDParam, $idpEntityID)
+    {
+        $returnTo = sprintf(
+            '%s&%s',
+            $return,
+            http_build_query(
+                [
+                    $returnIDParam => $idpEntityID,
+                ]
+            )
+        );
+
+        return new Response(302, ['Location' => $returnTo]);
     }
 }

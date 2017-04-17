@@ -76,6 +76,26 @@ class WayfTest extends PHPUnit_Framework_TestCase
         $this->assertSame('{"discovery":{"useLogos":false,"filter":"engine","entityID":"https:\/\/sp.example.org\/saml","returnIDParam":"IdP","return":"https:\/\/foo.example.org\/callback?foo=bar","displayName":"My SAML SP","lastChosen":false,"idpList":[{"entityID":"https:\/\/engine.surfconext.nl\/authentication\/idp\/metadata","displayName":"SURFconext | SURFnet","keywords":["SURFconext","engine","SURFconext | SURFnet"],"encodedEntityID":"https_engine.surfconext.nl_authentication_idp_metadata"}]}}', $response->getBody());
     }
 
+    public function testOneIdP()
+    {
+        // should immediately redirect
+        $request = new Request(
+            [
+                'REQUEST_METHOD' => 'GET',
+            ],
+            [
+                'entityID' => 'https://oneidp.example.org/saml',
+                'returnIDParam' => 'IdP',
+                'return' => 'https://foo.example.org/callback?foo=bar',
+            ],
+            []
+        );
+
+        $response = $this->w->run($request);
+        $this->assertSame(302, $response->getStatusCode());
+        $this->assertSame('https://foo.example.org/callback?foo=bar&IdP=https%3A%2F%2Fidp.tuxed.net%2Fsimplesamlphp%2Fsaml2%2Fidp%2Fmetadata.php', $response->getHeader('Location'));
+    }
+
     public function testChooseIdP()
     {
         $request = new Request(

@@ -25,5 +25,15 @@ return [
                 'https://engine.surfconext.nl/authentication/idp/metadata',
             ],
         ],
+        'https://oneidp.example.org/saml' => [
+            // the "displayName" for this SP
+            'displayName' => 'My SAML SP',
+
+            // list of entityIDs of the IdPs that are shown in the discovery
+            // page. Their information is extracted from the SAML metadata
+            'idpList' => [
+                'https://idp.tuxed.net/simplesamlphp/saml2/idp/metadata.php',
+            ],
+        ],
     ],
 ];
