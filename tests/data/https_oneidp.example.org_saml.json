@@ -1,0 +1,10 @@
+{
+    "https://idp.tuxed.net/simplesamlphp/saml2/idp/metadata.php": {
+        "displayName": "FrKoIdP",
+        "encodedEntityID": "https_idp.tuxed.net_simplesamlphp_saml_idp_metadata.php",
+        "entityID": "https://idp.tuxed.net/simplesamlphp/saml2/idp/metadata.php",
+        "keywords": [
+            "FrKoIdP"
+        ]
+    }
+}
