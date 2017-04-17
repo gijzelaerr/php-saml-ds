@@ -23,6 +23,16 @@ use fkooman\SAML\DS\Http\Response;
 use fkooman\SAML\DS\TwigTpl;
 use fkooman\SAML\DS\Wayf;
 
+set_error_handler(
+    function ($severity, $message, $file, $line) {
+        if (!(error_reporting() & $severity)) {
+            // This error code is not included in error_reporting
+            return;
+        }
+        throw new ErrorException($message, 0, $severity, $file, $line);
+    }
+);
+
 try {
     $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
 
@@ -54,8 +64,8 @@ try {
 } catch (Exception $e) {
     $response = new Response(
         500,
-        [],
-        htmlentities($e->getMessage(), ENT_QUOTES, 'UTF-8')
+        ['Content-Type' => 'text/plain'],
+        sprintf('ERROR [500] "%s"', htmlentities($e->getTraceAsString(), ENT_QUOTES, 'UTF-8'))
     );
     $response->send();
 }
