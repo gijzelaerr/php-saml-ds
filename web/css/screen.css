@@ -54,6 +54,7 @@ form.entity button img {
 
 form.entity button {
     width: 100%;
+    font-size: 100%;
     text-align: left;
     border: 0;
     background-color: #fff;
