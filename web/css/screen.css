@@ -73,6 +73,7 @@ form.entity button::-moz-focus-inner {
 
 form.filter input {
     width: 100%;
+    font-size: 100%;
     margin-bottom: 1em;
     padding: 0.7em 1em;
     border: 0;
