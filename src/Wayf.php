@@ -125,6 +125,7 @@ class Wayf
                 'useLogos' => $this->config->useLogos,
                 'filter' => $filter,
                 'entityID' => $spEntityID,
+                'encodedEntityID' => self::encodeEntityID($spEntityID),
                 'returnIDParam' => $returnIDParam,
                 'return' => $return,
                 'displayName' => $displayName,

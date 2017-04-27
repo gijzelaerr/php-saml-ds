@@ -80,7 +80,7 @@ try {
                     'entityDescriptors' => $entityDescriptors,
                 ]
             );
-            $logoCssFile = sprintf('%s/logo.css', $logoDir);
+            $logoCssFile = sprintf('%s/%s.css', $logoDir, $encodedEntityID);
             if (false === @file_put_contents($logoCssFile, $logoCss)) {
                 throw new RuntimeException(sprintf('unable to write "%s"', $logoCssFile));
             }
