@@ -205,7 +205,7 @@ class Wayf
         // XXX check return value?
         uasort($idpList, function ($a, $b) {
             // XXX make sure they have the field 'displayName'!
-            return strcmp($a['displayName'], $b['displayName']);
+            return strcasecmp($a['displayName'], $b['displayName']);
         });
 
         return $idpList;
