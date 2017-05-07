@@ -87,6 +87,13 @@ div.listHeader {
     border: 0;
     width: 100%;
     background-color: #eee;
+    line-height: 1em;
+}
+
+span.help {
+    font-size: 75%;
+    color: #aaa;
+    float: right;
 }
 
 div.footer {
