@@ -90,12 +90,6 @@ div.listHeader {
     line-height: 1em;
 }
 
-span.help {
-    font-size: 75%;
-    color: #aaa;
-    float: right;
-}
-
 div.footer {
     text-align: center;
     margin-bottom: 1em;
