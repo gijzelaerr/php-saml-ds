@@ -40,10 +40,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (0 === visibleCount) {
             // hide the accessList, as there are no entries matching the search
-            document.getElementById('accessList').style.display = "none";
+            document.getElementById("accessList").style.display = "none";
         } else {
             // show the accessList (again)
-            document.getElementById('accessList').style.display = "block";
+            document.getElementById("accessList").style.display = "block";
         }
     });
 });
