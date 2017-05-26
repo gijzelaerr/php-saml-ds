@@ -34,10 +34,9 @@ set_error_handler(
 );
 
 try {
-    $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
-
+    $config = new Config(require sprintf('%s/config/config.php', dirname(__DIR__)));
     $templateCache = null;
-    if ($config->enableTemplateCache) {
+    if ($config->get('enableTemplateCache')) {
         $templateCache = sprintf('%s/data/tpl', dirname(__DIR__));
     }
 
@@ -55,7 +54,7 @@ try {
         [
             'domain' => $request->getServerName(),
             'path' => $request->getRoot(),
-            'secure' => $config->secureCookie,
+            'secure' => $config->get('secureCookie'),
         ]
     );
 

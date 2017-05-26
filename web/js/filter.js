@@ -16,7 +16,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     "use strict";
-    // disable "classic" form submit when JS is enabled
+    // disable standard form submit when JS is enabled
     document.querySelector("form.filter").addEventListener("submit", function (e) {
         e.preventDefault();
     });
@@ -39,12 +39,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (0 === visibleCount) {
-            // no entries visible, show we have no results matching the
-            // filter
-            document.querySelector("div.noAvailable").style.display = "block";
+            // hide the accessList, as there are no entries matching the search
+            document.getElementById('accessList').style.display = "none";
         } else {
-            // delete the "no institutes" div
-            document.querySelector("div.noAvailable").style.display = "none";
+            // show the accessList (again)
+            document.getElementById('accessList').style.display = "block";
         }
     });
 });

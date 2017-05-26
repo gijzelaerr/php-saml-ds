@@ -29,7 +29,7 @@ div.container {
     text-align: justify;
 }
 
-ul, div.noAvailable {
+ul {
     background-color: #fff;
     list-style: none;
     background-color: #fff;
@@ -37,19 +37,8 @@ ul, div.noAvailable {
     margin-bottom: 2em;
 }
 
-div.noAvailable {
-    padding: 1em;
-}
-
 ul li:not(:last-child) {
     border-bottom: 2px solid #eee;
-}
-
-form.entity button img {
-    width: 64px;
-    height: 48px;
-    margin-right: 2em;
-    vertical-align: middle;
 }
 
 form.entity button {
@@ -99,11 +88,3 @@ div.footer {
 div.footer, div.footer a {
     color: #888;
 }
-
-div.show {
-    display: block;
-}
-
-div.hide {
-    display: none;
-}   

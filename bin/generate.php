@@ -27,14 +27,14 @@ use fkooman\SAML\DS\TwigTpl;
 $logoDir = sprintf('%s/data/logo/idp', dirname(__DIR__));
 
 try {
-    $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
+    $config = new Config(require sprintf('%s/config/config.php', dirname(__DIR__)));
     $metadataFiles = glob(sprintf('%s/config/metadata/*.xml', dirname(__DIR__)));
     $parser = new Parser($metadataFiles);
 
-    foreach (array_keys($config->spList->asArray()) as $entityID) {
+    foreach ($config->get('spList')->keys() as $entityID) {
         // convert all special characters in entityID to _ (same method as mod_auth_mellon)
         $encodedEntityID = preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $entityID));
-        $entityDescriptors = $parser->getEntitiesInfo($config->spList->$entityID->idpList->asArray());
+        $entityDescriptors = $parser->getEntitiesInfo($config->get('spList')->get($entityID)->get('idpList'));
         $twigTpl = new TwigTpl(
             [
                 sprintf('%s/views', dirname(__DIR__)),
@@ -54,7 +54,7 @@ try {
         }
 
         // (optionally) download and convert the logos from the IdP metadata
-        if ($config->useLogos) {
+        if ($config->get('useLogos')) {
             $httpClient = new CurlHttpClient(['httpsOnly' => false]);
             $logo = new Logo($logoDir, $httpClient);
             foreach ($entityDescriptors as $k => $v) {

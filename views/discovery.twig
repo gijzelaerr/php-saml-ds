@@ -14,27 +14,30 @@
     </form>
 
     {% if lastChosen %}
-        <div class="listHeader">Previously chosen</div>
-        <ul class="list">
-            <li>
-                <form class="entity" method="post">
-                    <button class="{{ lastChosen.encodedEntityID }}" autofocus="autofocus" name="idpEntityID" value="{{ lastChosen.entityID }}" tabindex="2">{{ lastChosen.displayName }}</button>
-                </form>
-            </li>
-        </ul>
+        <div id="lastChosen">
+            <div class="listHeader">Previously chosen</div>
+            <ul>
+                <li>
+                    <form class="entity" method="post">
+                        <button class="{{ lastChosen.encodedEntityID }}" autofocus="autofocus" name="idpEntityID" value="{{ lastChosen.entityID }}" tabindex="2">{{ lastChosen.displayName }}</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     {% endif %}
 
-    <div class="listHeader">Institutes with access</div>
-    <div class="noAvailable {% if idpList is empty %}show{% else %}hide{% endif %}">
-        <em>No institutes available.</em>
-    </div>
-    <ul id="disco" class="list">
-        {% for key, idp in idpList %}
-            <li>
-                <form class="entity" method="post">
-                    <button {% if filter and key == 0 %}autofocus="autofocus"{% endif %} name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="{{ idp.encodedEntityID }}" data-keywords="{{ idp.keywords|join(' ') }}">{{ idp.displayName }}</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+    {% if idpList is not empty %}
+        <div id="accessList">
+            <div class="listHeader">Institutes with access</div>
+            <ul id="disco">
+                {% for key, idp in idpList %}
+                    <li>
+                        <form class="entity" method="post">
+                            <button {% if filter and key == 0 %}autofocus="autofocus"{% endif %} name="idpEntityID" value="{{ idp.entityID }}" tabindex="{{ key + 2 }}" class="{{ idp.encodedEntityID }}" data-keywords="{{ idp.keywords|join(' ') }}">{{ idp.displayName }}</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 {% endblock %}

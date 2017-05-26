@@ -95,13 +95,13 @@ class Wayf
         }
 
         // XXX make sure there is a displayName!
-        $displayName = $this->config->spList->$spEntityID->displayName;
+        $displayName = $this->config->get('spList')->get($spEntityID)->get('displayName');
 
         // do we have an already previous chosen IdP?
         $lastChosen = false;
         if ($this->cookie->has('entityID')) {
             $idpEntityID = $this->cookie->get('entityID');
-            if (in_array($idpEntityID, $this->config->spList->$spEntityID->idpList->asArray())) {
+            if (in_array($idpEntityID, $this->config->get('spList')->get($spEntityID)->get('idpList'))) {
                 $lastChosen = $idpList[$idpEntityID];
                 // remove the last chosen IdP from the list of IdPs
                 unset($idpList[$idpEntityID]);
@@ -122,7 +122,7 @@ class Wayf
         $discoveryPage = $this->tpl->render(
             'discovery',
             [
-                'useLogos' => $this->config->useLogos,
+                'useLogos' => $this->config->get('useLogos'),
                 'filter' => $filter,
                 'entityID' => $spEntityID,
                 'encodedEntityID' => self::encodeEntityID($spEntityID),
@@ -152,7 +152,7 @@ class Wayf
         $idpList = $this->getIdPList($spEntityID);
 
         // XXX can we not idplist for that? Do we even need IdPList?
-        if (!in_array($idpEntityID, $this->config->spList->$spEntityID->idpList->asArray())) {
+        if (!in_array($idpEntityID, $this->config->get('spList')->get($spEntityID)->get('idpList'))) {
             throw new HttpException(
                 sprintf('the IdP "%s" is not listed for this SP', $idpEntityID),
                 400
@@ -182,7 +182,7 @@ class Wayf
     private function getIdPList($spEntityID)
     {
         // make sure the SP exists in the config
-        if (!isset($this->config->spList->$spEntityID)) {
+        if (!$this->config->get('spList')->has($spEntityID)) {
             throw new HttpException(
                 sprintf('SP with entityID "%s" not registered in discovery service', $spEntityID),
                 400
