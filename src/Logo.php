@@ -25,11 +25,17 @@ use RuntimeException;
 
 class Logo
 {
+    const PLACEHOLDER_IMAGE = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwAQMAAACbhe5cAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA
+B3RJTUUH4QYBFQY30jqTUAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUH
+AAAAA1BMVEWqqqoRfvv5AAAADUlEQVQYGWMYBUMKAAABsAABgx2r6QAAAABJRU5ErkJggg==';
+
     /** @var string */
     private $logoDir;
 
     /** @var \fkooman\SAML\DS\HttpClient\HttpClientInterface */
     private $httpClient;
+
+    private $errorLog = [];
 
     public function __construct($logoDir, HttpClientInterface $httpClient)
     {
@@ -43,18 +49,36 @@ class Logo
     }
 
     /**
+     * @return array
+     */
+    public function getErrorLog()
+    {
+        return $this->errorLog;
+    }
+
+    /**
      * @param string $encodedEntityID
      * @param array  $logoList
      */
     public function prepare($encodedEntityID, array $logoList)
     {
         if (0 === count($logoList)) {
-            // no logo
-            return false;
+            // no logo available from metadata, use placeholder instead
+            $logoData = base64_decode(self::PLACEHOLDER_IMAGE);
+            $mediaType = 'image/png';
+            $this->errorLog[] = sprintf('no logo defined in metadata for "%s", using placeholder', $encodedEntityID);
+        } else {
+            $logoUri = self::getBestLogoUri($logoList);
+            try {
+                list($logoData, $mediaType) = $this->obtainLogo($logoUri);
+            } catch (LogoException $e) {
+                // there was an error obtaining the logo, use placeholder
+                // instead
+                $logoData = base64_decode(self::PLACEHOLDER_IMAGE);
+                $mediaType = 'image/png';
+                $this->errorLog[] = sprintf('unable to obtain logo for "%s", using placeholder', $encodedEntityID);
+            }
         }
-
-        $logoUri = self::getBestLogoUri($logoList);
-        list($logoData, $mediaType) = $this->obtainLogo($logoUri);
 
         $fileExtension = self::mediaTypeToExtension($mediaType);
         $originalFileName = sprintf('%s/%s.orig.%s', $this->logoDir, $encodedEntityID, $fileExtension);
