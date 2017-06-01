@@ -1,0 +1,6 @@
+debhelper-build-stamp
+php-saml-ds.debhelper.log
+php-saml-ds.substvars
+php-saml-ds/
+tmp/
+
