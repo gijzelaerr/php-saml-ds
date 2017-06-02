@@ -34,7 +34,7 @@ set_error_handler(
 );
 
 try {
-    $config = new Config(require sprintf('%s/config/config.php', dirname(__DIR__)));
+    $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
     $templateCache = null;
     if ($config->get('enableTemplateCache')) {
         $templateCache = sprintf('%s/data/tpl', dirname(__DIR__));
@@ -61,10 +61,12 @@ try {
     $wayf = new Wayf($config, $twigTpl, $cookie, sprintf('%s/data', dirname(__DIR__)));
     $wayf->run($request)->send();
 } catch (Exception $e) {
+    $errorMessage = sprintf('[500] (%s): %s', get_class($e), $e->getMessage());
     $response = new Response(
         500,
         ['Content-Type' => 'text/plain'],
-        sprintf('ERROR [500] "%s"', htmlentities($e->getTraceAsString(), ENT_QUOTES, 'UTF-8'))
+        htmlentities($errorMessage, ENT_QUOTES, 'UTF-8')
     );
     $response->send();
+    error_log(sprintf('%s {%s}', $errorMessage, $e->getTraceAsString()));
 }
