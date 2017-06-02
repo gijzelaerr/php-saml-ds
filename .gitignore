@@ -2,4 +2,4 @@
 /config/views
 /config/metadata
 /data
-/vendor
+#/vendor
