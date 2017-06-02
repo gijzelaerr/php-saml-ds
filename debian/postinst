@@ -1,0 +1,6 @@
+#!/bin/sh
+
+#DEBHELPER
+
+sudo chown www-data:www-data /var/lib/php-saml-ds
+
