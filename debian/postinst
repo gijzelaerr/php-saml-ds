@@ -2,5 +2,5 @@
 
 #DEBHELPER
 
-sudo chown www-data:www-data /var/lib/php-saml-ds
+chown www-data:www-data /var/lib/php-saml-ds
 
