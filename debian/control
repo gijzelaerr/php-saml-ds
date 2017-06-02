@@ -6,7 +6,9 @@ Build-Depends: debhelper (>= 9),
     dh-exec,
     composer,
     php-curl,
-    php-imagick
+    php-imagick,
+    php-xml,
+    phpunit
 #pkg-php-tools,
 Standards-Version: 3.9.8
 Homepage: https://github.com/fkooman/php-saml-ds
@@ -16,7 +18,7 @@ Vcs-Browser: https://github.com/fkooman/php-saml-ds
 Package: php-saml-ds
 Architecture: all
 Pre-Depends: dpkg
-Depends: ${misc:Depends}, php, php-curl, php-imagick
+Depends: ${misc:Depends}, php, php-curl, php-imagick, php-xml
 #, ${phpcomposer:Debian-require}
 Recommends: apache2 | lighttpd | php-fpm | httpd-cgi, libapache2-mod-php
 #Suggests: ${phpcomposer:Debian-require-dev}
