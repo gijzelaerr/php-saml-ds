@@ -26,7 +26,7 @@ use fkooman\SAML\DS\TwigTpl;
 $logoDir = sprintf('%s/data/logo/idp', dirname(__DIR__));
 
 try {
-    $config = new Config(require sprintf('%s/config/config.php', dirname(__DIR__)));
+    $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
     $metadataFiles = glob(sprintf('%s/config/metadata/*.xml', dirname(__DIR__)));
     $parser = new Parser($metadataFiles);
 

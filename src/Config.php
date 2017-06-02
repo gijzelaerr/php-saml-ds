@@ -27,7 +27,7 @@ class Config
     /**
      * @param array $data
      */
-    public function __construct(array $data)
+    private function __construct(array $data)
     {
         $this->data = $data;
     }
