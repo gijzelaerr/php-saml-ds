@@ -23,7 +23,7 @@ use SimpleXMLElement;
 class Parser
 {
     /** @var array */
-    private $metadata;
+    private $metadata = [];
 
     /** @var array */
     private $errorLog = [];
