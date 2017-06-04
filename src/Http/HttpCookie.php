@@ -17,8 +17,6 @@
 
 namespace fkooman\SAML\DS\Http;
 
-use DateInterval;
-use DateTime;
 use fkooman\SAML\DS\Http\Exception\CookieException;
 
 class HttpCookie implements CookieInterface
@@ -27,49 +25,27 @@ class HttpCookie implements CookieInterface
     private $cookieOptions;
 
     /**
-     * @param string $domain
-     * @param string $path
-     * @param bool   $secure
+     * @param array $cookieOptions
      */
     public function __construct(array $cookieOptions = [])
     {
-        $defaultOptions = [
-            'domain' => '',
-            'path' => '',
-            'secure' => true,
-        ];
-
-        $this->cookieOptions = array_merge($defaultOptions, $cookieOptions);
-    }
-
-    public function set($name, $value)
-    {
-        $dateTime = new DateTime();
-        $dateTime->add(new DateInterval('P1Y'));
-
-        $cookieResult = setcookie(
-            $name,
-            $value,
-            $dateTime->getTimestamp(),
-            $this->cookieOptions['path'],
-            $this->cookieOptions['domain'],
-            $this->cookieOptions['secure'],
-            true // httponly
+        $this->cookieOptions = array_merge(
+            [
+                // defaults
+                'Secure' => true,       // bool
+                'HttpOnly' => true,     // bool
+                'Path' => '/',          // string
+                'Domain' => null,       // string
+                'Max-Age' => null,      // int > 0
+                'SameSite' => 'Strict', // "Strict|Lax"
+            ],
+            $cookieOptions
         );
-
-        if (false === $cookieResult) {
-            throw new CookieException('unable to set cookie');
-        }
-    }
-
-    public function has($name)
-    {
-        return array_key_exists($name, $_COOKIE);
     }
 
     public function delete($name)
     {
-        $this->set($name, false);
+        self::set($name, '');
     }
 
     public function get($name)
@@ -79,5 +55,40 @@ class HttpCookie implements CookieInterface
         }
 
         return $_COOKIE[$name];
+    }
+
+    public function has($name)
+    {
+        return array_key_exists($name, $_COOKIE);
+    }
+
+    public function set($name, $value)
+    {
+        $attributeValueList = [];
+        if ($this->cookieOptions['Secure']) {
+            $attributeValueList[] = 'Secure';
+        }
+        if ($this->cookieOptions['HttpOnly']) {
+            $attributeValueList[] = 'HttpOnly';
+        }
+        $attributeValueList[] = sprintf('Path=%s', $this->cookieOptions['Path']);
+        if (!is_null($this->cookieOptions['Domain'])) {
+            $attributeValueList[] = sprintf('Domain=%s', $this->cookieOptions['Domain']);
+        }
+
+        if (!is_null($this->cookieOptions['Max-Age'])) {
+            $attributeValueList[] = sprintf('Max-Age=%d', $this->cookieOptions['Max-Age']);
+        }
+        $attributeValueList[] = sprintf('SameSite=%s', $this->cookieOptions['SameSite']);
+
+        header(
+            sprintf(
+                'Set-Cookie: %s=%s; %s',
+                $name,
+                $value,
+                implode('; ', $attributeValueList)
+            ),
+            false
+        );
     }
 }
