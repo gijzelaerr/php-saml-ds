@@ -54,6 +54,7 @@ try {
             'SameSite' => 'Lax',
             'Secure' => $config->get('secureCookie'),
             'Max-Age' => 60 * 60 * 24 * 365,   // 1Y
+            'Path' => $request->getRoot(),
         ]
     );
     $wayf = new Wayf($config, $twigTpl, $cookie, sprintf('%s/data', dirname(__DIR__)));
