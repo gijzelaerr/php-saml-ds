@@ -53,10 +53,12 @@ try {
         [
             'SameSite' => 'Lax',
             'Secure' => $config->get('secureCookie'),
-            'Max-Age' => 60 * 60 * 24 * 365,   // 1Y
+            'Max-Age' => 60 * 60 * 24 * 90,   // 90 days
             'Path' => $request->getRoot(),
+            'Domain' => $request->getServerName(),
         ]
     );
+
     $wayf = new Wayf($config, $twigTpl, $cookie, sprintf('%s/data', dirname(__DIR__)));
     $wayf->run($request)->send();
 } catch (Exception $e) {
