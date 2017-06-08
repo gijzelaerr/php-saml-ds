@@ -54,8 +54,6 @@ try {
             'SameSite' => 'Lax',
             'Secure' => $config->get('secureCookie'),
             'Max-Age' => 60 * 60 * 24 * 90,   // 90 days
-            'Path' => $request->getRoot(),
-            'Domain' => $request->getServerName(),
         ]
     );
 
