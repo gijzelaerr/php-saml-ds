@@ -17,11 +17,11 @@
 require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));
 
 use fkooman\SAML\DS\Config;
-use fkooman\SAML\DS\Http\HttpCookie;
 use fkooman\SAML\DS\Http\Request;
 use fkooman\SAML\DS\Http\Response;
 use fkooman\SAML\DS\TwigTpl;
 use fkooman\SAML\DS\Wayf;
+use fkooman\SeCookie\Cookie;
 
 set_error_handler(
     function ($severity, $message, $file, $line) {
@@ -49,7 +49,7 @@ try {
     );
 
     $request = new Request($_SERVER, $_GET, $_POST);
-    $cookie = new HttpCookie(
+    $cookie = new Cookie(
         [
             'SameSite' => 'Lax',
             'Secure' => $config->get('secureCookie'),
