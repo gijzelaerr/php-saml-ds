@@ -6,10 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/type-resolver/src', $vendorDir . '/phpdocumentor/reflection-docblock/src'),
+    'fkooman\\SeCookie\\Tests\\' => array($vendorDir . '/fkooman/secookie/tests'),
+    'fkooman\\SeCookie\\' => array($vendorDir . '/fkooman/secookie/src'),
     'fkooman\\SAML\\DS\\Tests\\' => array($baseDir . '/tests'),
     'fkooman\\SAML\\DS\\' => array($baseDir . '/src'),
-    'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
-    'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
-    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
+    'Twig\\' => array($vendorDir . '/twig/twig/src'),
 );
