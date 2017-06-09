@@ -1,1 +1,3 @@
 /var/lib/php-saml-ds
+/usr/share/php-saml-ds/vendor
+

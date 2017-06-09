@@ -1,8 +1,4 @@
 #!/usr/bin/make -f
 
-override_dh_prep:
-	dh_prep
-	#composer install
-
 %:
-	dh $@  #--with phpcomposer
+	dh $@ 
