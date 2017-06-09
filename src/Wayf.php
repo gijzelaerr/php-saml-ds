@@ -17,10 +17,10 @@
 
 namespace fkooman\SAML\DS;
 
-use fkooman\SAML\DS\Http\CookieInterface;
 use fkooman\SAML\DS\Http\Exception\HttpException;
 use fkooman\SAML\DS\Http\Request;
 use fkooman\SAML\DS\Http\Response;
+use fkooman\SeCookie\CookieInterface;
 use RuntimeException;
 
 class Wayf
@@ -31,7 +31,7 @@ class Wayf
     /** @var TplInterface */
     private $tpl;
 
-    /** @var Http\CookieInterface */
+    /** @var \fkooman\SeCookie\CookieInterface */
     private $cookie;
 
     /** @var string */

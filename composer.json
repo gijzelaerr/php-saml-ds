@@ -23,10 +23,11 @@
         "ext-pcre": "*",
         "ext-spl": "*",
         "ext-xml": "*",
+        "fkooman/secookie": "dev-master",
         "php": ">=5.4.0",
         "twig/twig": "^1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8"
+        "phpunit/phpunit": "^5.7"
     }
 }

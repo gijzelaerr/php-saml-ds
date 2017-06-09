@@ -27,9 +27,23 @@ class Config
     /**
      * @param array $data
      */
-    public function __construct(array $data)
+    private function __construct(array $data)
     {
         $this->data = $data;
+    }
+
+    /**
+     * @param string $fileName
+     *
+     * @return self
+     */
+    public static function fromFile($fileName)
+    {
+        if (false === $configData = @include($fileName)) {
+            throw new ConfigException(sprintf('unable to read "%s"', $fileName));
+        }
+
+        return new self($configData);
     }
 
     /**

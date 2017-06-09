@@ -17,11 +17,11 @@
 require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));
 
 use fkooman\SAML\DS\Config;
-use fkooman\SAML\DS\Http\HttpCookie;
 use fkooman\SAML\DS\Http\Request;
 use fkooman\SAML\DS\Http\Response;
 use fkooman\SAML\DS\TwigTpl;
 use fkooman\SAML\DS\Wayf;
+use fkooman\SeCookie\Cookie;
 
 set_error_handler(
     function ($severity, $message, $file, $line) {
@@ -34,7 +34,7 @@ set_error_handler(
 );
 
 try {
-    $config = new Config(require sprintf('%s/config/config.php', dirname(__DIR__)));
+    $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
     $templateCache = null;
     if ($config->get('enableTemplateCache')) {
         $templateCache = sprintf('%s/data/tpl', dirname(__DIR__));
@@ -49,22 +49,23 @@ try {
     );
 
     $request = new Request($_SERVER, $_GET, $_POST);
-
-    $cookie = new HttpCookie(
+    $cookie = new Cookie(
         [
-            'domain' => $request->getServerName(),
-            'path' => $request->getRoot(),
-            'secure' => $config->get('secureCookie'),
+            'SameSite' => 'Lax',
+            'Secure' => $config->get('secureCookie'),
+            'Max-Age' => 60 * 60 * 24 * 90,   // 90 days
         ]
     );
 
     $wayf = new Wayf($config, $twigTpl, $cookie, sprintf('%s/data', dirname(__DIR__)));
     $wayf->run($request)->send();
 } catch (Exception $e) {
+    $errorMessage = sprintf('[500] (%s): %s', get_class($e), $e->getMessage());
     $response = new Response(
         500,
         ['Content-Type' => 'text/plain'],
-        sprintf('ERROR [500] "%s"', htmlentities($e->getTraceAsString(), ENT_QUOTES, 'UTF-8'))
+        htmlentities($errorMessage, ENT_QUOTES, 'UTF-8')
     );
     $response->send();
+    error_log(sprintf('%s {%s}', $errorMessage, $e->getTraceAsString()));
 }

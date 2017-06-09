@@ -17,7 +17,7 @@
 
 namespace fkooman\SAML\DS\Tests\Http;
 
-use fkooman\SAML\DS\Http\CookieInterface;
+use fkooman\SeCookie\CookieInterface;
 
 class TestCookie implements CookieInterface
 {

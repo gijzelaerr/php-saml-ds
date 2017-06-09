@@ -23,7 +23,10 @@ use SimpleXMLElement;
 class Parser
 {
     /** @var array */
-    private $metadata;
+    private $metadata = [];
+
+    /** @var array */
+    private $errorLog = [];
 
     public function __construct(array $metadataFiles)
     {
@@ -35,6 +38,14 @@ class Parser
             // $xml->registerXPathNamespace('mdui', 'urn:oasis:names:tc:SAML:metadata:ui');
             $this->metadata[] = $xml;
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrorLog()
+    {
+        return $this->errorLog;
     }
 
     public function getEntitiesInfo(array $entityIDList)
@@ -78,9 +89,14 @@ class Parser
             }
             $idpDescriptor = $entityInfo[0]->xpath('md:IDPSSODescriptor');
 
+            if (null === $displayName = $this->getDisplayName($entityInfo[0])) {
+                $displayName = $entityID;
+                $this->errorLog[] = sprintf('no DisplayName or OrganizationDisplayName for "%s", using entityID', $entityID);
+            }
+
             return [
                 'entityID' => $entityID,
-                'displayName' => $this->getDisplayName($entityInfo[0]),
+                'displayName' => $displayName,
                 'SSO' => $this->getSSO($idpDescriptor[0]),
                 'signingCert' => $this->getSigningCert($idpDescriptor[0]),
                 'keywords' => $this->getKeywords($entityInfo[0]),
