@@ -1,58 +1,57 @@
-Description: fix location of php-saml-ds installation
+Description: path fix
 
---- php-saml-ds-0.1.orig/bin/generate.php
-+++ php-saml-ds-0.1/bin/generate.php
+--- php-saml-ds-0.2.orig/bin/generate.php
++++ php-saml-ds-0.2/bin/generate.php
 @@ -15,7 +15,9 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
 -require_once sprintf('%s/vendor/autoload.php', dirname(__DIR__));
 + 
-+$base_dir = '/usr/share/php-saml-ds';
-+require_once sprintf('%s/vendor/autoload.php', $base_dir);
++$baseDir = '/usr/share/php-saml-ds';
++require_once sprintf('%s/vendor/autoload.php', $baseDir);
  
  use fkooman\SAML\DS\Config;
- use fkooman\SAML\DS\Exception\LogoException;
-@@ -24,11 +26,12 @@ use fkooman\SAML\DS\Logo;
+ use fkooman\SAML\DS\HttpClient\CurlHttpClient;
+@@ -23,11 +25,11 @@ use fkooman\SAML\DS\Logo;
  use fkooman\SAML\DS\Parser;
  use fkooman\SAML\DS\TwigTpl;
  
 -$logoDir = sprintf('%s/data/logo/idp', dirname(__DIR__));
-+$logoDir = sprintf('%s/data/logo/idp', $base_dir);
-+
++$logoDir = sprintf('%s/data/logo/idp', $baseDir);
  
  try {
--    $config = new Config(require sprintf('%s/config/config.php', dirname(__DIR__)));
+-    $config = Config::fromFile(sprintf('%s/config/config.php', dirname(__DIR__)));
 -    $metadataFiles = glob(sprintf('%s/config/metadata/*.xml', dirname(__DIR__)));
-+    $config = new Config(require sprintf('%s/config/config.php', $base_dir));
-+    $metadataFiles = glob(sprintf('%s/config/metadata/*.xml', $base_dir));
++    $config = Config::fromFile(sprintf('%s/config/config.php', $baseDir));
++    $metadataFiles = glob(sprintf('%s/config/metadata/*.xml', $baseDir));
      $parser = new Parser($metadataFiles);
  
      foreach ($config->get('spList')->keys() as $entityID) {
-@@ -37,7 +40,7 @@ try {
+@@ -36,7 +38,7 @@ try {
          $entityDescriptors = $parser->getEntitiesInfo($config->get('spList')->get($entityID)->get('idpList'));
          $twigTpl = new TwigTpl(
              [
 -                sprintf('%s/views', dirname(__DIR__)),
-+                sprintf('%s/views', $base_dir),
++                sprintf('%s/views', $baseDir),
              ]
          );
          $metadataContent = $twigTpl->render(
-@@ -48,7 +51,7 @@ try {
+@@ -47,7 +49,7 @@ try {
          );
  
          // write a minimal SAML IdP file for every IdP for use by mod_auth_mellon
 -        $metadataFile = sprintf('%s/data/%s.xml', dirname(__DIR__), $encodedEntityID);
-+        $metadataFile = sprintf('%s/data/%s.xml', $base_dir, $encodedEntityID);
++        $metadataFile = sprintf('%s/data/%s.xml', $baseDir, $encodedEntityID);
          if (false === @file_put_contents($metadataFile, $metadataContent)) {
              throw new RuntimeException(sprintf('unable to write "%s"', $metadataFile));
          }
-@@ -96,7 +99,7 @@ try {
+@@ -94,7 +96,7 @@ try {
              unset($entityDescriptors[$k]['logoList']);
          }
  
 -        $idpListFile = sprintf('%s/data/%s.json', dirname(__DIR__), $encodedEntityID);
-+        $idpListFile = sprintf('%s/data/%s.json', $base_dir, $encodedEntityID);
++        $idpListFile = sprintf('%s/data/%s.json', $baseDir, $encodedEntityID);
          if (false === @file_put_contents($idpListFile, json_encode($entityDescriptors))) {
              throw new RuntimeException(sprintf('unable to write "%s"', $idpListFile));
          }

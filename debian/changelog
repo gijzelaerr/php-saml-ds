@@ -1,5 +1,5 @@
-php-saml-ds (0.1-3xenial) xenial; urgency=medium
+php-saml-ds (0.2-1xenial) xenial; urgency=medium
 
-  * initial release
+  * new upstream release
 
  -- Gijs Molenaar (launchpad ppa build key) <gijs@pythonic.nl>  Thu, 01 Jun 2017 12:05:53 +0200
